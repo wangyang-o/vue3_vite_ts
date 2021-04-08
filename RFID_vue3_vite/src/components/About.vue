@@ -1,10 +1,8 @@
 <!--
- * @Descripttion: 
- * @version: 
  * @Author: wy
- * @Date: 2021年04月07日 21:55:46
+ * @Date: 2021年04月07日 
  * @LastEditors: wy
- * @LastEditTime: 2021年04月07日 22:04:05
+ * @LastEditTime: 2021年04月08日
 -->
 <template>
   <h1>{{ msg }}</h1>
