@@ -3,11 +3,12 @@
  * @version:
  * @Author: wy
  * @Date: 2021年04月07日 21:46:49
- * @LastEditors: wy
- * @LastEditTime: 2021年04月08日 13:31:13
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021年04月10日
  */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HelloWorld from '../components/HelloWorld.vue'
+import cookiesUtil from "@/utils/cookie";
 const routes: Array<RouteRecordRaw> = [
     {
         path: '',
@@ -52,5 +53,12 @@ const router = createRouter({
             behavior: 'smooth',
         }
     },
+})
+// 全局路由拦截
+router.beforeEach((to, from, next) => {
+    // ...
+    if (cookiesUtil.getToken()) {
+
+    }
 })
 export default router

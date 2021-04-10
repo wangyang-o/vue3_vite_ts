@@ -2,10 +2,10 @@
  * @Descripttion: 封装axios拦截器
  * @Author: wy
  * @Date: 2021年04月08日
- * @LastEditTime: 2021年04月08日
+ * @LastEditTime: 2021年04月10日
  */
 // 首先引入axios和封装的cookie方法
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 import cookiesUtil from "./cookie";
 // 提示弹窗
 import { ElNotification, ElMessageBox } from 'element-plus';
@@ -47,7 +47,7 @@ service.interceptors.response.use(
             ElNotification({
                 title: '错误',
                 type: 'error',
-                message: res.data,
+                message: res,
                 duration: 5
             });
             if (res.status === 401 || res.status === 403 || res.status === 408) {

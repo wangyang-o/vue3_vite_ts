@@ -3,8 +3,8 @@
  * @version: 
  * @Author: wy
  * @Date: 2021年04月08日 10:52:45
- * @LastEditors: wy
- * @LastEditTime: 2021年04月08日 16:05:00
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021年04月10日
 -->
 <!--
  * @Descripttion: 
@@ -41,6 +41,7 @@ export default defineComponent({
   flex-direction: column;
   height: 100vh;
   width: 100vw;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 .not-found:after {
   position: absolute;
