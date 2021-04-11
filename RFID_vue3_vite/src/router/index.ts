@@ -4,12 +4,23 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:46:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年04月10日
+ * @LastEditTime: 2021年04月11日
  */
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import HelloWorld from '../components/HelloWorld.vue'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
+// 进度条
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+import HelloWorld from '../components/HelloWorld.vue';
 import cookiesUtil from "@/utils/cookie";
+
+const whiteList: Array<string> = ['/login', '/auth-redirect', '/bind', '/register']
+
+const Login = () => import(/* webpackChunkName: "Login" */ '@/views/Login.vue');
+const NotFound = () => import(/* webpackChunkName: "NotFound" */ '@/components/404.vue');
+const About = () => import(/* webpackChunkName: "About" */ '@/components/About.vue');
+
 const routes: Array<RouteRecordRaw> = [
+    { path: '/login', component: Login },
     {
         path: '',
         redirect: () => {
@@ -27,14 +38,12 @@ const routes: Array<RouteRecordRaw> = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () =>
-            import(/* webpackChunkName: "About" */ '../components/About.vue'),
+        component: About,
     },
     {
         path: '/404',
         name: 'NotFound',
-        component: () =>
-            import(/* webpackChunkName: "NotFound" */ '../components/404.vue'),
+        component: NotFound,
     },
     {
         path: '/:currentPath(.*)*', // 路由未匹配到，进入这个
@@ -57,8 +66,25 @@ const router = createRouter({
 // 全局路由拦截
 router.beforeEach((to, from, next) => {
     // ...
+    NProgress.start();
+    console.log(111);
     if (cookiesUtil.getToken()) {
-
+        if (to.path === '/login') {
+            next({ path: '/' });
+            NProgress.done();
+        }
+        next()
+    } else {
+        // 没有token，强制跳转到登录页
+        if (whiteList.indexOf(to.path) !== -1) {
+            next();
+            NProgress.done();
+        } else {
+            next();
+            // next('/login');
+            // next(`/login?redirect=${to.path}`)
+            NProgress.done();
+        }
     }
 })
-export default router
+export default router;
