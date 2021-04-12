@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年04月11日
+ * @LastEditTime: 2021年04月12日
 -->
 <template>
 
@@ -22,7 +22,7 @@
 
         </el-form-item>
       </el-form>
-      <el-button style="width:200px" type="primary" round @click="submitForm('loginForm')">提交</el-button>
+      <el-button style="width:200px" type="primary" round @click="submitForm('loginForm')">登录</el-button>
 
       <transition name="el-zoom-in-center">
         <div class="regester">
@@ -34,7 +34,7 @@
 
 </template>
 <script lang="ts">
-import { ref, defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
 export default defineComponent({
   name: "Login",
   data() {
@@ -66,8 +66,11 @@ export default defineComponent({
     };
   },
 
-  setup: () => {
+  setup: (props, context) => {
     const count = ref(0);
+    console.log(props);
+    console.log(context);
+
     return { count };
   },
 });
@@ -90,6 +93,7 @@ export default defineComponent({
   background: #ecf0f1;
   border: solid 1px #3498db;
   border-radius: 10px;
+
   display: flex;
   flex-direction: column;
   /* vertical-align: center; */
