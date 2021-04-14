@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年04月12日
+ * @LastEditTime: 2021年04月14日
 -->
 <template>
 
@@ -34,7 +34,8 @@
 
 </template>
 <script lang="ts">
-import { defineComponent, ref } from "vue";
+
+import { watch, defineComponent, ref } from "vue";
 export default defineComponent({
   name: "Login",
   data() {
@@ -68,9 +69,7 @@ export default defineComponent({
 
   setup: (props, context) => {
     const count = ref(0);
-    console.log(props);
-    console.log(context);
-
+    watch(count, () => {});
     return { count };
   },
 });

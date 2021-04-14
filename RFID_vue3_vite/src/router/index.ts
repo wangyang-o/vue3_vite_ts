@@ -4,7 +4,7 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:46:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年04月11日
+ * @LastEditTime: 2021年04月14日
  */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 // 进度条
@@ -17,7 +17,6 @@ const whiteList: Array<string> = ['/login', '/auth-redirect', '/bind', '/registe
 
 const Login = () => import(/* webpackChunkName: "Login" */ '@/views/Login.vue');
 const NotFound = () => import(/* webpackChunkName: "NotFound" */ '@/components/404.vue');
-const About = () => import(/* webpackChunkName: "About" */ '@/components/About.vue');
 
 const routes: Array<RouteRecordRaw> = [
     { path: '/login', component: Login },
@@ -31,14 +30,6 @@ const routes: Array<RouteRecordRaw> = [
         path: '/home',
         name: 'HelloWorld',
         component: HelloWorld,
-    },
-    {
-        path: '/about',
-        name: 'About',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: About,
     },
     {
         path: '/404',
@@ -67,7 +58,6 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     // ...
     NProgress.start();
-    console.log(111);
     if (cookiesUtil.getToken()) {
         if (to.path === '/login') {
             next({ path: '/' });
