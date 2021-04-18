@@ -4,7 +4,7 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:46:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年04月14日
+ * @LastEditTime: 2021年04月18日
  */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 // 进度条
@@ -44,7 +44,7 @@ const routes: Array<RouteRecordRaw> = [
     },
 ]
 const router = createRouter({
-    history: createWebHistory(''),
+    history: createWebHistory(),
     routes,
     scrollBehavior(to, from, savedPosition) {
         return {
@@ -70,8 +70,8 @@ router.beforeEach((to, from, next) => {
             next();
             NProgress.done();
         } else {
-            next();
-            // next('/login');
+            // next();
+            next('/login');
             // next(`/login?redirect=${to.path}`)
             NProgress.done();
         }
