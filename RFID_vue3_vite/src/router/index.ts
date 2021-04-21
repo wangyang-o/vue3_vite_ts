@@ -4,7 +4,7 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:46:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年04月18日
+ * @LastEditTime: 2021年04月21日
  */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 // 进度条
@@ -13,10 +13,11 @@ import 'nprogress/nprogress.css';
 import HelloWorld from '../components/HelloWorld.vue';
 import cookiesUtil from "@/utils/cookie";
 
-const whiteList: Array<string> = ['/login', '/auth-redirect', '/bind', '/register']
+const whiteList: Array<string> = ['/login', '/bind', '/register']
 
 const Login = () => import(/* webpackChunkName: "Login" */ '@/views/Login.vue');
 const NotFound = () => import(/* webpackChunkName: "NotFound" */ '@/components/404.vue');
+const Layout = () => import(/* webpackChunkName: "Layout" */ '@/layout/index.vue');
 
 const routes: Array<RouteRecordRaw> = [
     { path: '/login', component: Login },
@@ -28,8 +29,12 @@ const routes: Array<RouteRecordRaw> = [
     },
     {
         path: '/home',
-        name: 'HelloWorld',
-        component: HelloWorld,
+        name: 'Layout',
+        component: Layout,
+        children:[
+      { path: '', component: HelloWorld },
+
+        ]
     },
     {
         path: '/404',
@@ -70,8 +75,8 @@ router.beforeEach((to, from, next) => {
             next();
             NProgress.done();
         } else {
-            // next();
-            next('/login');
+            next();
+            // next('/login');
             // next(`/login?redirect=${to.path}`)
             NProgress.done();
         }
