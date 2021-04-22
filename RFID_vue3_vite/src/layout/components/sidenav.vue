@@ -1,38 +1,37 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年04月21日
+ * @LastEditTime: 2021年04月22日
 -->
 <template>
   <div class="sidebar_body">
-    <div class="sidebar" :class="{ 'sidebar' : isActive, 'sidebar active': !isActive}">
+    <div class="sidebar" :class="{ 'sidebar': isActive, 'sidebar active': !isActive }">
       <div class="logo_content">
         <div class="logo">
-          <i class='bx el-icon-ship'></i>
-          <div class="logo_name" :class="{ 'logo_name' : !isActive, 'logo_name logo_name_active': isActive}">SmartStorage</div>
+          <i class="bx el-icon-ship"></i>
+          <div class="logo_name" :class="{ 'logo_name': !isActive, 'logo_name logo_name_active': isActive }">SmartStorage</div>
         </div>
-        <i class='bx el-icon-s-operation' id="btn" @click="toggle"></i>
+        <i class="bx el-icon-s-operation" id="btn" @click="toggle"></i>
       </div>
       <ul class="nav_list">
-
-        <li v-for="item in computedSidelist" :key="item.id">
-          <a href="#">
-            <i :class='item.icon'></i>
-            <span class="links_name">{{item.title}}</span>
+        <li v-for="item in computedSidelist" :key="item.id" @click="RouteSwitchSide(item.path)">
+          <a :class="{ side_active: item.path == activePath }">
+            <i :class="item.icon"></i>
+            <span class="links_name">{{ item.title }}</span>
           </a>
-          <span class="tooltip">{{item.title}}</span>
+          <span class="tooltip">{{ item.title }}</span>
         </li>
       </ul>
       <div class="profile_content">
         <div class="profile">
           <div class="profile_details">
-            <img src="@/assets/img/littlecun.jpg" alt="">
+            <img src="@/assets/img/littlecun.jpg" />
             <div class="name_job">
               <div class="name">欢迎您，xxx</div>
-              <div class="job">{{loginTime()}}</div>
+              <div class="job">{{ loginTime() }}</div>
             </div>
           </div>
-          <i class='bx el-icon-more-outline' id="log_out"></i>
+          <i class="bx el-icon-more-outline" id="log_out" @click="goback()"></i>
         </div>
       </div>
     </div>
@@ -45,12 +44,13 @@
 </template>
   
 <script lang="ts">
-import { ref, defineComponent, computed } from "vue";
-import { dateFormat } from "@/utils/common";
+import { ref, defineComponent, computed } from 'vue';
+import { dateFormat } from '@/utils/common';
+import router from '@/router';
 
 export default defineComponent({
-  name: "Sidenav",
-  props: ["sidelist"],
+  name: 'Sidenav',
+  props: ['sidelist'],
 
   setup: (props) => {
     //样式切换
@@ -60,17 +60,34 @@ export default defineComponent({
     };
     // 登录时间
     const loginTime = (): string => {
-      return dateFormat("YYYY-mm-dd HH:MM", new Date());
+      return dateFormat('YYYY-mm-dd HH:MM', new Date());
     };
-    const activePath = ref("/home");
+    const a = () => {
+      if (1 === 1) {
+      }
+    };
+    //侧边栏数据
     const computedSidelist = computed(() => {
       return props.sidelist;
     });
+    //高亮的item
+    const activePath = ref(computedSidelist.value[0].path);
+    //点击切换item
+    const RouteSwitchSide = (path: string) => {
+      activePath.value = path;
+      router.push(activePath.value);
+    };
+    const goback = () => {
+      router.push('');
+    };
     return {
       isActive,
       toggle,
       loginTime,
       computedSidelist,
+      RouteSwitchSide,
+      activePath,
+      goback,
     };
   },
 });
@@ -222,6 +239,12 @@ export default defineComponent({
 }
 .sidebar ul li a:hover {
   color: #11101d;
+  cursor: pointer;
+  background: #95a5a6;
+}
+.side_active {
+  cursor: pointer;
+  color: #3727e9 !important;
   background: #fff;
 }
 .sidebar ul li i {
