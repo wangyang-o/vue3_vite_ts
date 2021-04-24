@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年04月22日
+ * @LastEditTime: 2021年04月24日
 -->
 <template>
   <div class="sidebar_body">
@@ -37,6 +37,8 @@
     </div>
     <div class="home_content">
       <div class="text">
+
+        <Header></Header>
         <slot>nothing</slot>
       </div>
     </div>
@@ -47,11 +49,14 @@
 import { ref, defineComponent, computed } from 'vue';
 import { dateFormat } from '@/utils/common';
 import router from '@/router';
+import Header from '@/layout/components/header.vue';
 
 export default defineComponent({
   name: 'Sidenav',
   props: ['sidelist'],
-
+  components: {
+    Header,
+  },
   setup: (props) => {
     //样式切换
     const isActive = ref(false);
@@ -337,7 +342,7 @@ export default defineComponent({
   height: 100%;
   width: calc(100% - 78px);
   left: 78px;
-  background: #e4e9f7;
+  background: #f0f2f5;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2px);
   transition: all 0.5s ease;
 }
@@ -348,7 +353,7 @@ export default defineComponent({
   font-size: 25px;
   font-weight: 500;
   color: #1d1b31;
-  margin: 12px;
+  /* margin: 5px; */
 }
 .sidebar.active ~ .home_content {
   width: calc(100% - 240px);

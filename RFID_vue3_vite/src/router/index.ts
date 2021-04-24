@@ -4,13 +4,13 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:46:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年04月22日
+ * @LastEditTime: 2021年04月24日
  */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 // 进度条
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
-import HelloWorld from '../components/HelloWorld.vue';
+import Dashboard from '../components/Dashboard.vue';
 import cookiesUtil from '@/utils/cookie';
 
 const whiteList: Array<string> = ['/login', '/bind', '/register'];
@@ -33,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
 		name: 'Layout',
 		component: Layout,
 		children: [
-			{ path: '', name: 'HelloWorld', component: HelloWorld },
+			{ path: '', name: 'Dashboard', component: Dashboard },
 			{ path: '/users', name: 'Users', component: Users },
 			{ path: '/:currentPath(.*)*', name: 'NotFound', component: NotFound },
 		],
