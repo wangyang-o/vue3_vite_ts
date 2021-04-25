@@ -4,7 +4,7 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年04月24日
+ * @LastEditTime: 2021年04月25日
  */
 import { createApp } from 'vue';
 import App from './App.vue';
@@ -14,31 +14,9 @@ import { store, key } from './vuex';
 import ElementPlus from 'element-plus';
 // 样式
 import 'element-plus/lib/theme-chalk/index.css';
+import 'animate.css/animate.min.css';
 // 自定义通用样式
-import '@/assets/css/common.css'; // ruoyi css
-// echarts
-import ECharts from 'vue-echarts';
-import { use } from 'echarts/core';
-// 手动引入 ECharts 各模块来减小打包体积
-import { CanvasRenderer } from 'echarts/renderers';
-import { BarChart, PieChart } from 'echarts/charts';
-import {
-	GridComponent,
-	TooltipComponent,
-	TitleComponent,
-	LegendComponent,
-	VisualMapComponent,
-} from 'echarts/components';
-use([
-	CanvasRenderer,
-	BarChart,
-	PieChart,
-	GridComponent,
-	TitleComponent,
-	LegendComponent,
-	TooltipComponent,
-	VisualMapComponent,
-]);
+import '@/assets/css/common.css'; // 通用 css
 
 const app = createApp(App);
 // 注册相应模块
@@ -49,4 +27,4 @@ app.mount('#app');
 
 // 全局注册组件（也可以使用局部注册）
 // app.component(ElButton.name, ElButton)
-app.component('v-chart', ECharts);
+// app.component('v-chart', ECharts);
