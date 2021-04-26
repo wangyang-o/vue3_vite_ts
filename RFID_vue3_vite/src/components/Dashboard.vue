@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年04月25日
+ * @LastEditTime: 2021年04月26日
 -->
 
 
@@ -136,7 +136,7 @@
 <script lang="ts">
 import { ref, defineComponent, reactive, onMounted } from 'vue';
 import echarts from '@/utils/echarts';
-import { animateFlag, enterAnimation } from '@/utils/enterAnimation';
+
 export default defineComponent({
   name: 'Dashboard',
   props: {},
@@ -170,7 +170,7 @@ export default defineComponent({
     const barRef = ref<HTMLElement | null>(null);
     const treeRef = ref<HTMLElement | null>(null);
     const gaugeRef = ref<HTMLElement | null>(null);
-    enterAnimation();
+    
     // const option1 = reactive();
     onMounted(() => {
       //感叹号非空断言
@@ -373,8 +373,7 @@ export default defineComponent({
       treeRef,
       gaugeRef,
       cardIInfo,
-      bodyStyle,
-      animateFlag,
+      bodyStyle,      
     };
   },
 });

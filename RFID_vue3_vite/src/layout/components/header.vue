@@ -2,27 +2,26 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月21日
- * @LastEditTime: 2021年04月25日
+ * @LastEditTime: 2021年04月26日
 -->
 <template>
-  <transition name="fade" class="animate__animated animate__bounce">
-    <div class="header-container">
-      <div class="header-info_personal">
-        <i class="el-icon-back" @click="goBack">返回</i>
 
-      </div>
-      <div class="header-info_new">
-        <i class="el-icon-full-screen mx-1" @click="goBack"></i>
-        <i class="el-icon-refresh  mx-1" @click="goBack"></i>
-        <div class="header-img_container  mx-1">
-          <img src="@/assets/img/littlecun.jpg" class="mr-1">
-          <span>天行</span>
-        </div>
-        <i class="el-icon-s-tools mx-1" @click="goBack"></i>
+  <div class="header-container">
+    <div class="header-info_personal">
+      <i class="el-icon-back" @click="goBack">返回</i>
 
-      </div>
     </div>
-  </transition>
+    <div class="header-info_new">
+      <i class="el-icon-full-screen mx-1" @click="goBack"></i>
+      <i class="el-icon-refresh  mx-1" @click="goBack"></i>
+      <div class="header-img_container  mx-1">
+        <img src="@/assets/img/littlecun.jpg" class="mr-1">
+        <span>天行</span>
+      </div>
+      <i class="el-icon-s-tools mx-1" @click="goBack"></i>
+
+    </div>
+  </div>
 
 </template>
     

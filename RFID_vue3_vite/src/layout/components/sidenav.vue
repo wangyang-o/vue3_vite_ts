@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年04月24日
+ * @LastEditTime: 2021年04月26日
 -->
 <template>
   <div class="sidebar_body">
@@ -37,7 +37,6 @@
     </div>
     <div class="home_content">
       <div class="text">
-
         <Header></Header>
         <slot>nothing</slot>
       </div>
@@ -49,6 +48,7 @@
 import { ref, defineComponent, computed } from 'vue';
 import { dateFormat } from '@/utils/common';
 import router from '@/router';
+import { useStore } from "vuex";
 import Header from '@/layout/components/header.vue';
 
 export default defineComponent({
@@ -82,6 +82,8 @@ export default defineComponent({
       activePath.value = path;
       router.push(activePath.value);
     };
+    // 
+    
     const goback = () => {
       router.push('');
     };
