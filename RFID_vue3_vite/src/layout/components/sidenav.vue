@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年04月26日
+ * @LastEditTime: 2021年04月27日
 -->
 <template>
   <div class="sidebar_body">
@@ -9,13 +9,16 @@
       <div class="logo_content">
         <div class="logo">
           <i class="bx el-icon-ship"></i>
-          <div class="logo_name" :class="{ 'logo_name': !isActive, 'logo_name logo_name_active': isActive }">SmartStorage</div>
+          <div
+            class="logo_name"
+            :class="{ 'logo_name': !isActive, 'logo_name logo_name_active': isActive }"
+          >SmartStorage</div>
         </div>
         <i class="bx el-icon-s-operation" id="btn" @click="toggle"></i>
       </div>
       <ul class="nav_list">
         <li v-for="item in computedSidelist" :key="item.id" @click="RouteSwitchSide(item.path)">
-          <a :class="{ side_active: item.path == activePath }">
+          <a :class="{ side_active: item.path == activePath1 }">
             <i :class="item.icon"></i>
             <span class="links_name">{{ item.title }}</span>
           </a>
@@ -45,7 +48,7 @@
 </template>
   
 <script lang="ts">
-import { ref, defineComponent, computed } from 'vue';
+import { ref, defineComponent, computed, reactive } from 'vue';
 import { dateFormat } from '@/utils/common';
 import router from '@/router';
 import { useStore } from "vuex";
@@ -57,19 +60,17 @@ export default defineComponent({
   components: {
     Header,
   },
-  setup: (props) => {
+  setup: (props, context) => {
+    const store = useStore();
     //样式切换
     const isActive = ref(false);
     const toggle = () => {
+      console.log(context);
       isActive.value = !isActive.value;
     };
     // 登录时间
     const loginTime = (): string => {
       return dateFormat('YYYY-mm-dd HH:MM', new Date());
-    };
-    const a = () => {
-      if (1 === 1) {
-      }
     };
     //侧边栏数据
     const computedSidelist = computed(() => {
@@ -77,14 +78,19 @@ export default defineComponent({
     });
     //高亮的item
     const activePath = ref(computedSidelist.value[0].path);
+    const activePath1 = computed(() => {
+      return store.getters.activePath;
+    });
     //点击切换item
     const RouteSwitchSide = (path: string) => {
+      store.commit('changeActivePath', path)
       activePath.value = path;
-      router.push(activePath.value);
+      router.push(activePath1.value);
     };
     // 
-    
+
     const goback = () => {
+
       router.push('');
     };
     return {
@@ -95,6 +101,7 @@ export default defineComponent({
       RouteSwitchSide,
       activePath,
       goback,
+      activePath1
     };
   },
 });

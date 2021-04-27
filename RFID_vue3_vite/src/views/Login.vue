@@ -1,16 +1,13 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年04月14日
+ * @LastEditTime: 2021年04月27日
 -->
 <template>
-
   <div class="login-container">
     <div class="login-left"></div>
     <div class="login-form">
-      <div class="login-title">
-        智慧数字化仓储管理系统
-      </div>
+      <div class="login-title">智慧数字化仓储管理系统</div>
       <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" label-width="100px">
         <el-form-item label="用户账号:" prop="userName" style="width:300px">
           <el-input type="text" v-model="loginForm.userName"></el-input>
@@ -18,20 +15,15 @@
         <el-form-item label="用户密码:" prop="password" style="width:300px">
           <el-input type="password" v-model="loginForm.password"></el-input>
         </el-form-item>
-        <el-form-item>
-
-        </el-form-item>
+        <el-form-item></el-form-item>
       </el-form>
-      <el-button style="width:200px" type="primary" round @click="submitForm('loginForm')">登录</el-button>
+      <el-button style="width:200px" type="primary" round @click="submitlogin()">登录</el-button>
 
       <transition name="el-zoom-in-center">
-        <div class="regester">
-          没有账号？？
-        </div>
+        <div class="regester">没有账号？？</div>
       </transition>
     </div>
   </div>
-
 </template>
 <script lang="ts">
 
@@ -69,8 +61,11 @@ export default defineComponent({
 
   setup: (props, context) => {
     const count = ref(0);
-    watch(count, () => {});
-    return { count };
+    const submitlogin = () => {
+      console.log('1112');
+    }
+    watch(count, () => { });
+    return { count, submitlogin };
   },
 });
 </script>

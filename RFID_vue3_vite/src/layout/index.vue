@@ -2,14 +2,13 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月21日
- * @LastEditTime: 2021年04月26日
+ * @LastEditTime: 2021年04月27日
 -->
 
 <template>
   <!-- layout111111111111111111 -->
 
   <Sidenav :sidelist="sidelist">
-
     <router-view></router-view>
   </Sidenav>
 </template>
@@ -35,7 +34,7 @@ export default defineComponent({
       {
         id: 2,
         icon: 'el-icon-user-solid',
-        title: '用户信息',
+        title: '角色管理',
         path: '/users',
       },
       {
