@@ -34,7 +34,19 @@
               <div class="job">{{ loginTime() }}</div>
             </div>
           </div>
-          <i class="bx el-icon-more-outline" id="log_out" @click="goback()"></i>
+          <el-popconfirm
+            confirmButtonText="确定"
+            cancelButtonText="点错了"
+            icon="el-icon-info"
+            iconColor="red"
+            title="确定退出吗？"
+            trigger="click"
+            @confirm="goback"
+          >
+            <template #reference :confirm="goback">
+              <i class="bx el-icon-more-outline" id="log_out"></i>
+            </template>
+          </el-popconfirm>
         </div>
       </div>
     </div>
@@ -94,6 +106,7 @@ export default defineComponent({
 
     const goback = () => {
       router.push('login');
+      console.log(1111);
     };
     return {
       isActive,

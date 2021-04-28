@@ -4,15 +4,9 @@
  * @Date: 2021年04月21日
  * @LastEditTime: 2021年04月21日
 -->
-<!--
- * @Author: wy
- * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年04月21日
--->
 
-<template>
-  footer
-</template>
+
+<template>footer</template>
   
   <script lang="ts">
 import { ref, defineComponent } from "vue";

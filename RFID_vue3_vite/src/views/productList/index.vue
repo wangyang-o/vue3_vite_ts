@@ -4,41 +4,57 @@
  * @Date: 2021年04月22日
  * @LastEditTime: 2021年04月28日
 -->
-<!--
- * @Author: wy
- * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年04月21日
--->
 <template>
   <!-- 查询条件，添加用户 -->
   <el-card class="m-1">
-    <el-skeleton :rows="0" animated :loading="animateFlag">
-      <template #default>
-        <el-form :inline="true" :model="userQueryParams">
-          <el-row type="flex">
-            <el-col :span="5">
-              <el-input size="small" v-model="userQueryParams.userName" placeholder="用户名称"></el-input>
-            </el-col>
-            <el-col :span="16">
-              <el-button type="primary" size="small" icon="el-icon-search">搜索</el-button>
-            </el-col>
-            <el-col :span="3">
-              <el-button size="small" type="warning" icon="el-icon-circle-plus">添加用户</el-button>
-            </el-col>
-          </el-row>
-        </el-form>
-      </template>
-    </el-skeleton>
+    <!-- <el-skeleton :rows="0" animated :loading="animateFlag">
+      <template #default></template>
+    </el-skeleton>-->
+    <el-form :inline="true" :model="userQueryParams">
+      <el-row type="flex">
+        <el-col :span="5">
+          <el-input size="small" v-model="userQueryParams.userName" placeholder="用户名称"></el-input>
+        </el-col>
+        <el-col :span="16">
+          <el-button type="primary" size="small" icon="el-icon-search">搜索</el-button>
+        </el-col>
+        <el-col :span="3">
+          <el-button size="small" type="warning" icon="el-icon-circle-plus">添加用户</el-button>
+        </el-col>
+      </el-row>
+    </el-form>
   </el-card>
-  <!-- 用户表格 -->
+  <!-- 产品列表 -->
   <el-card class="m-1">
-    <el-table :data="userData" style="width: 100%">
-      <el-table-column prop="userName" label="姓名"></el-table-column>
-      <el-table-column prop="age" label="年龄"></el-table-column>
-      <el-table-column prop="phone" label="电话"></el-table-column>
-      <el-table-column prop="gender" label="性别"></el-table-column>
-      <el-table-column prop="role" label="角色"></el-table-column>
-    </el-table>
+    <el-carousel :interval="4000" type="card" height="200px">
+      <el-carousel-item v-for="item in 6" :key="item">
+        <img class="carousel-img" src="@/assets/img/404.jpg" />
+      </el-carousel-item>
+    </el-carousel>
+
+    <el-row type="flex" justify="center">
+      <el-col :span="19">
+        <el-space wrap v-for="(o, index) in 5" :key="o">
+          <el-card
+            class="animate__animated"
+            :class="{ animate__slideInLeft: o < 3, animate__slideInRight: o > 3 }"
+            :body-style="{ padding: '0px' }"
+          >
+            <img
+              src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+              class="image"
+            />
+            <div style="padding: 14px;">
+              <span>好吃的汉堡</span>
+              <div class="bottom">
+                <time class="time">这是产品</time>
+                <el-button type="text" class="button">操作按钮</el-button>
+              </div>
+            </div>
+          </el-card>
+        </el-space>
+      </el-col>
+    </el-row>
     <el-row type="flex" justify="center">
       <el-col :span="6">
         <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
@@ -95,4 +111,10 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.carousel-img {
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+}
+</style>
