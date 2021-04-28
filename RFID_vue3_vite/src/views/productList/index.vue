@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月22日
- * @LastEditTime: 2021年04月27日
+ * @LastEditTime: 2021年04月28日
 -->
 <!--
  * @Author: wy
@@ -61,7 +61,7 @@ interface userDataInf {
   role: string;
 }
 export default defineComponent({
-  name: 'Users',
+  name: 'ProductList',
   props: {},
   setup: () => {
     const animateFlag = ref(true);
@@ -80,7 +80,7 @@ export default defineComponent({
       age: 18,
       gender: 'man',
       role: 'superAdmin',
-    },{
+    }, {
       userName: 'wy',
       phone: '185262728',
       age: 18,

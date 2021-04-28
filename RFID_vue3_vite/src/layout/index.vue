@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月21日
- * @LastEditTime: 2021年04月27日
+ * @LastEditTime: 2021年04月28日
 -->
 
 <template>
@@ -35,7 +35,7 @@ export default defineComponent({
         id: 2,
         icon: 'el-icon-user-solid',
         title: '角色管理',
-        path: '/users',
+        path: '/roles',
       },
       {
         id: 3,

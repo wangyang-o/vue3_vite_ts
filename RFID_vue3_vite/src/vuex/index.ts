@@ -4,27 +4,33 @@
  * @Author: wy
  * @Date: 2021年04月07日 22:05:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年04月27日
+ * @LastEditTime: 2021年04月28日
  */
 import { InjectionKey } from 'vue';
 import { createStore, Store } from 'vuex';
-import getters from './getters';
 export interface State {
+	isSideOpen: boolean;
 	activePath: string;
 }
 
-export const key: InjectionKey<Store<State>> = Symbol();
+// export const key: InjectionKey<Store<State>> = Symbol();
 
-export const store = createStore<State>({
+export default createStore<State>({
 	state() {
 		return {
-			activePath: '/home',
+			isSideOpen: true,
+			activePath: '',
 		};
 	},
-	getters,
+	getters: {
+		activePath: (state: State) => state.activePath,
+	},
 	mutations: {
-		changeActivePath(state:State, newPath: string) {
+		changeActivePath(state: State, newPath: string) {
 			state.activePath = newPath;
+		},
+		changeIsSideOpen(state: State) {
+			state.isSideOpen = !state.isSideOpen;
 		},
 	},
 });

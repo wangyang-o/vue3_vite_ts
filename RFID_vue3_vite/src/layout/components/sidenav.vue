@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年04月27日
+ * @LastEditTime: 2021年04月28日
 -->
 <template>
   <div class="sidebar_body">
@@ -18,7 +18,7 @@
       </div>
       <ul class="nav_list">
         <li v-for="item in computedSidelist" :key="item.id" @click="RouteSwitchSide(item.path)">
-          <a :class="{ side_active: item.path == activePath1 }">
+          <a :class="{ side_active: item.path == activePath }">
             <i :class="item.icon"></i>
             <span class="links_name">{{ item.title }}</span>
           </a>
@@ -48,7 +48,7 @@
 </template>
   
 <script lang="ts">
-import { ref, defineComponent, computed, reactive } from 'vue';
+import { ref, defineComponent, computed, reactive, onMounted } from 'vue';
 import { dateFormat } from '@/utils/common';
 import router from '@/router';
 import { useStore } from "vuex";
@@ -61,37 +61,39 @@ export default defineComponent({
     Header,
   },
   setup: (props, context) => {
-    const store = useStore();
-    //样式切换
-    const isActive = ref(false);
+    // const store = useStore();
+    //侧边栏 展开，关闭切换
+    // const isActive = computed(() => store.state.isSideOpen);
+    const isActive = ref<string | null>(null);
+    isActive.value = window.sessionStorage.getItem('isOpen');
     const toggle = () => {
-      console.log(context);
-      isActive.value = !isActive.value;
+      // store.commit('changeIsSideOpen');
+      if (!isActive.value) {
+        window.sessionStorage.setItem('isOpen', 'open');
+        isActive.value = 'open';
+      } else {
+        window.sessionStorage.removeItem('isOpen');
+        isActive.value = null;
+      }
     };
     // 登录时间
-    const loginTime = (): string => {
-      return dateFormat('YYYY-mm-dd HH:MM', new Date());
-    };
+    const loginTime = (): string => dateFormat('YYYY-mm-dd HH:MM', new Date());
     //侧边栏数据
-    const computedSidelist = computed(() => {
-      return props.sidelist;
-    });
+    const computedSidelist = computed(() => props.sidelist);
     //高亮的item
-    const activePath = ref(computedSidelist.value[0].path);
-    const activePath1 = computed(() => {
-      return store.getters.activePath;
-    });
+    const activePath = ref<string | null>('/home');
+    const temp = window.sessionStorage.getItem('activePath');
+    if (temp) activePath.value = temp;
     //点击切换item
     const RouteSwitchSide = (path: string) => {
-      store.commit('changeActivePath', path)
+      // store.commit('changeActivePath', path)
+      window.sessionStorage.setItem('activePath', path);
       activePath.value = path;
-      router.push(activePath1.value);
+      router.push(activePath.value!);
     };
-    // 
 
     const goback = () => {
-
-      router.push('');
+      router.push('login');
     };
     return {
       isActive,
@@ -99,9 +101,8 @@ export default defineComponent({
       loginTime,
       computedSidelist,
       RouteSwitchSide,
-      activePath,
       goback,
-      activePath1
+      activePath
     };
   },
 });
