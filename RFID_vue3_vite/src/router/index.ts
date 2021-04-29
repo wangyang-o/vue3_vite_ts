@@ -4,7 +4,7 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:46:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年04月28日
+ * @LastEditTime: 2021年04月29日
  */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 // 进度条
@@ -33,7 +33,7 @@ const StockList = () =>
 const ToolsList = () =>
 	import(/* webpackChunkName: "ToolsList" */ '@/views/toolsList/index.vue');
 const WarehousingInfo = () =>
-	import(/* webpackChunkName: "Warehousinglnfo" */ '@/views/warehousinglnfo/index.vue');
+	import(/* webpackChunkName: "Warehousinglnfo" */ '@/views/warehousingInfo/index.vue');
 
 const routes: Array<RouteRecordRaw> = [
 	{ path: '/login', component: Login },

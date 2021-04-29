@@ -2,10 +2,10 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月22日
- * @LastEditTime: 2021年04月28日
+ * @LastEditTime: 2021年04月29日
 -->
 <template>
-  <!-- 查询条件，添加用户 -->
+  <!-- 查询条件，添加商品 -->
   <el-card class="m-1">
     <el-skeleton :rows="0" animated :loading="animateFlag">
       <template #default>
@@ -18,7 +18,12 @@
               <el-button type="primary" size="small" icon="el-icon-search">搜索</el-button>
             </el-col>
             <el-col :span="3">
-              <el-button size="small" type="warning" icon="el-icon-circle-plus">添加用户</el-button>
+              <el-button
+                size="small"
+                type="warning"
+                icon="el-icon-circle-plus"
+                @click="drawerIsOpen = !drawerIsOpen"
+              >添加商品</el-button>
             </el-col>
           </el-row>
         </el-form>
@@ -40,6 +45,37 @@
       </el-col>
     </el-row>
   </el-card>
+
+  <el-drawer
+    title="我嵌套了 Form !"
+    :before-close="handleClose"
+    v-model="drawerIsOpen"
+    direction="rtl"
+    custom-class="demo-drawer"
+    ref="drawer"
+  >
+    <div class="demo-drawer__content">
+      <el-form :model="drawerForm">
+        <el-form-item label="活动名称">
+          <el-input v-model="drawerForm.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="活动区域">
+          <el-select v-model="drawerForm.region" placeholder="请选择活动区域">
+            <el-option label="区域一" value="shanghai"></el-option>
+            <el-option label="区域二" value="beijing"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div class="demo-drawer__footer">
+        <el-button @click="cancelForm">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="closeDrawer()"
+          :loading="loading"
+        >{{ loading ? '提交中 ...' : '确 定' }}</el-button>
+      </div>
+    </div>
+  </el-drawer>
 </template>
 
 <script lang="ts">
@@ -85,7 +121,29 @@ export default defineComponent({
     setTimeout(() => {
       animateFlag.value = false;
     }, 500);
-    return { animateFlag, userQueryParams, userData };
+
+
+    const handleClose = () => {
+      drawerIsOpen.value = false;
+    };
+    const drawerIsOpen = ref(false);
+    // const drawerRef = ref<HTMLElement | null>(null);
+    const loading = ref(false);
+    const drawerForm = reactive({ name: '篮球', region: '重庆' });
+    const cancelForm = () => {
+      loading.value = false;
+      drawerIsOpen.value = false;
+      // clearTimeout(this.timer);
+    }
+    const closeDrawer = () => {
+      drawerIsOpen.value = false;
+    }
+
+    return {
+      animateFlag,
+      userQueryParams, userData,
+      handleClose, drawerIsOpen, drawerForm, loading, cancelForm, closeDrawer
+    };
   },
 });
 </script>
