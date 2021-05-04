@@ -4,7 +4,7 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:46:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年04月29日
+ * @LastEditTime: 2021年05月04日
  */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 // 进度条
@@ -92,15 +92,15 @@ router.beforeEach((to, from, next) => {
 			next({ path: '/' });
 			NProgress.done();
 		}
-		next();
+		// next();
 	} else {
 		// 没有token，强制跳转到登录页
-		if (whiteList.indexOf(to.path) !== -1) {
+		if (whiteList.includes(to.path)) {
 			next();
 			NProgress.done();
 		} else {
-			next();
-			// next('/login');
+			// next();
+			next('/login');
 			// next(`/login?redirect=${to.path}`)
 			NProgress.done();
 		}

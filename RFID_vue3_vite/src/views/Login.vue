@@ -1,21 +1,21 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年04月27日
+ * @LastEditTime: 2021年05月04日
 -->
 <template>
   <div class="login-container">
     <div class="login-left"></div>
     <div class="login-form">
       <div class="login-title">智慧数字化仓储管理系统</div>
-      <el-form :model="loginForm" status-icon :rules="rules" ref="loginForm" label-width="100px">
+      <el-form :model="loginForm" status-icon :rules="rules" ref="loginRef" label-width="100px">
         <el-form-item label="用户账号:" prop="userName" style="width:300px">
-          <el-input type="text" v-model="loginForm.userName"></el-input>
+          <el-input type="text" v-model="loginForm.userName" placeholder="账号"></el-input>
         </el-form-item>
         <el-form-item label="用户密码:" prop="password" style="width:300px">
-          <el-input type="password" v-model="loginForm.password"></el-input>
+          <el-input type="password" v-model="loginForm.password" placeholder="密码"></el-input>
         </el-form-item>
-        <el-form-item></el-form-item>
+        <!-- <el-form-item></el-form-item> -->
       </el-form>
       <el-button style="width:200px" type="primary" round @click="submitlogin()">登录</el-button>
 
@@ -27,45 +27,44 @@
 </template>
 <script lang="ts">
 
-import { watch, defineComponent, ref } from "vue";
+import { watch, defineComponent, ref, reactive } from "vue";
+import { validSession, toLogin, logout } from '@/api/login';
+// interface loginInf {
+//   userName: string;
+//   password: string;
+// }
 export default defineComponent({
   name: "Login",
-  data() {
-    return {
-      loginForm: {
-        userName: "wy",
-        password: "1234",
-      },
-      rules: {
-        userName: [
-          { required: true, message: "请输入用户姓名", trigger: "blur" },
-          {
-            min: 2,
-            max: 30,
-            message: "长度在 3 到 30 个字符",
-            trigger: "blur",
-          },
-        ],
-        password: [
-          { required: true, message: "请输入用户密码", trigger: "blur" },
-          {
-            min: 3,
-            max: 30,
-            message: "长度在 3 到 30 个字符",
-            trigger: "blur",
-          },
-        ],
-      },
-    };
-  },
-
   setup: (props, context) => {
-    const count = ref(0);
-    const submitlogin = () => {
-      console.log('1112');
+    const loginForm = reactive({ userName: '', password: '' });
+    const loginRef = ref<HTMLElement | null>(null);
+
+    const rules = {
+      userName: [
+        { required: true, message: "请输入用户姓名", trigger: "blur" },
+        {
+          min: 2,
+          max: 30,
+          message: "长度在 3 到 30 个字符",
+          trigger: "blur",
+        },
+      ],
+      password: [
+        { required: true, message: "请输入用户密码", trigger: "blur" },
+        {
+          min: 3,
+          max: 30,
+          message: "长度在 3 到 30 个字符",
+          trigger: "blur",
+        },
+      ],
     }
-    watch(count, () => { });
-    return { count, submitlogin };
+    const submitlogin = async () => {
+      console.log('loginForm', loginForm);
+      const res = await toLogin(loginForm);
+      console.log(res);
+    }
+    return { loginForm, loginRef, submitlogin, rules };
   },
 });
 </script>

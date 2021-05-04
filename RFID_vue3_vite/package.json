@@ -2,7 +2,7 @@
   "name": "rfid-vue3-vite",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
+    "rfid": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview"
   },

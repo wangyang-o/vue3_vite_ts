@@ -4,7 +4,7 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年04月27日
+ * @LastEditTime: 2021年05月04日
  */
 import { defineConfig } from 'vite';
 // Vue 3 单文件组件支持
@@ -24,21 +24,20 @@ export default defineConfig({
 		},
 	},
 
-	// 服务代理
+	// 服务
 	server: {
 		// 自动打开
 		open: true,
 		port: 3030,
 		// 设为 true 时若端口已被占用则会直接退出，而不是尝试下一个可用端口。
 		strictPort: true,
-		// hot: true,//自动保存
 		// proxy: {
-		//   '/au': {
-		//     target: `http://localhost:3030`,
-		//     changeOrigin: true,
-		//     rewrite: (path) => path.replace(/^\/au/, '')
-		//   }
-		// }
+		// 	'/': {
+		// 		target: `http://localhost:3000`,
+		// 		// changeOrigin: true,
+		// 		// rewrite: (path) => path.replace(/^\/au/, ''),
+		// 	},
+		// },
 	},
 	// 插件
 	plugins: [vue()],
