@@ -13,3 +13,10 @@ export function getUserList(data: any) {
 		data: data,
 	});
 }
+export function fuzzySearch(data: any) {
+	return service({
+		url: 'api/users/fuzzySearch',
+		method: 'post',
+		data: data,
+	});
+}

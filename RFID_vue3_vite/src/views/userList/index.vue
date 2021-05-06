@@ -50,8 +50,10 @@
       <el-table-column align="right">
         <template #header>
           <el-input
-            v-model="search"
+            v-model="keyword"
+            clearable
             @keyup.enter.native="searchByKeyword"
+            @clear="searchUserName"
             size="mini"
             placeholder="输入关键字搜索"
           />
@@ -80,7 +82,7 @@
 
 <script lang="ts">
 import { ref, defineComponent, toRefs, reactive, onMounted } from 'vue';
-import { getUserList } from '@/api/users';
+import { getUserList, fuzzySearch } from '@/api/users';
 interface queryParamsInf {
   userName: string;
   pageSize: number;
@@ -103,10 +105,9 @@ export default defineComponent({
       pageNum: 1,
       pageSize: 10,
     });
+    const keyword = ref('');
     const userData = ref([]);
     const count = ref(0);
-    const search = ref('');
-
     const userList = async () => {
       const { data, code }: any = await getUserList(queryParams);
       userData.value = data.data;
@@ -120,12 +121,12 @@ export default defineComponent({
     }
     const searchUserName = () => {
       queryParams.pageNum = 1;
-      console.log(queryParams.pageNum);
       userList();
     }
-    const searchByKeyword = () => {
-      console.log(111);
-
+    const searchByKeyword = async () => {
+      const { data, code }: any = await fuzzySearch({ keyword:keyword.value });
+      userData.value = data.data;
+      count.value = data.count;
     }
     const indexMethod = (index: number) => {
       return (queryParams.pageNum - 1) * queryParams.pageSize + index + 1;
@@ -142,7 +143,7 @@ export default defineComponent({
     }, 500);
     return {
       animateFlag, ...toRefs(queryParams), userData, count,
-      search, searchUserName, searchByKeyword,
+      searchUserName, searchByKeyword, keyword,
       handleEdit, handleDelete, handleCurrentChange, indexMethod
     };
   },
