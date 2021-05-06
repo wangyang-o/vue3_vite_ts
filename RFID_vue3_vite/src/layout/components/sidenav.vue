@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年04月28日
+ * @LastEditTime: 2021年05月06日
 -->
 <template>
   <div class="sidebar_body">
@@ -43,7 +43,7 @@
             trigger="click"
             @confirm="goback"
           >
-            <template #reference :confirm="goback">
+            <template #reference>
               <i class="bx el-icon-more-outline" id="log_out"></i>
             </template>
           </el-popconfirm>
@@ -63,8 +63,9 @@
 import { ref, defineComponent, computed, reactive, onMounted } from 'vue';
 import { dateFormat } from '@/utils/common';
 import router from '@/router';
-import { useStore } from "vuex";
 import Header from '@/layout/components/header.vue';
+import { logout } from '@/api/login';
+import { ElNotification } from 'element-plus';
 
 export default defineComponent({
   name: 'Sidenav',
@@ -104,9 +105,14 @@ export default defineComponent({
       router.push(activePath.value!);
     };
 
-    const goback = () => {
+    const goback = async () => {
+      const res: any = await logout();
+      ElNotification({
+        type: 'success',
+        message: res.msg,
+        duration: 1000,
+      });
       router.push('login');
-      console.log(1111);
     };
     return {
       isActive,
@@ -145,7 +151,7 @@ export default defineComponent({
   width: 78px;
   background: #11101d;
   padding: 6px 14px;
-  z-index: 99;
+  /* z-index: 99; */
   transition: all 0.5s ease;
 }
 .sidebar.active {
@@ -247,7 +253,7 @@ export default defineComponent({
 }
 .sidebar ul li .el-icon-search {
   position: absolute;
-  z-index: 99;
+  /* z-index: 99; */
   color: #fff;
   font-size: 22px;
   transition: all 0.5 ease;
@@ -369,9 +375,9 @@ export default defineComponent({
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2px);
   transition: all 0.5s ease;
 }
-.sidebar.active ~ .home_content {
+/* .sidebar.active ~ .home_content {
   z-index: 100;
-}
+} */
 .home_content .text {
   font-size: 25px;
   font-weight: 500;

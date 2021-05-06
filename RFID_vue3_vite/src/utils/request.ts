@@ -2,7 +2,7 @@
  * @Descripttion: 封装axios拦截器
  * @Author: wy
  * @Date: 2021年04月08日
- * @LastEditTime: 2021年05月04日
+ * @LastEditTime: 2021年05月05日
  */
 // 首先引入axios和封装的cookie方法
 import axios from 'axios';
@@ -11,22 +11,17 @@ import cookiesUtil from './cookie';
 import { ElNotification, ElMessageBox } from 'element-plus';
 import router from '../router';
 
-axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8';
-
 const service = axios.create({
 	baseURL: 'http://localhost:3000', // url = base url + request url
 	timeout: 10000,
-	// withCredentials: true, // 请求携带凭据
+	withCredentials: true, // 请求携带凭据
 	headers: {
-		// clear cors
-		// 'Cache-Control': 'no-cache',
-		// 'Pragma': 'no-cache'
+		'Content-Type': 'application/json;charset=utf-8',
 	},
 });
 // 请求拦截
 service.interceptors.request.use(
 	(config) => {
-		console.log(config);
 		// 判断一下是否有cookie 如果有的话则把cookie放入请求头中
 		if (cookiesUtil.getToken()) {
 			config.headers[cookiesUtil.getTokenKey()] = cookiesUtil.getToken();
@@ -41,22 +36,18 @@ service.interceptors.request.use(
 );
 // 响应拦截
 service.interceptors.response.use(
-	(response) => {
-		const res = response.data;
-		if (response.status !== 200) {
-			ElNotification({
-				title: '错误',
-				type: 'error',
-				message: res,
-				duration: 1000,
-			});
-			if (
-				response.status === 401 ||
-				response.status === 403 ||
-				response.status === 408
-			) {
+	(res: any) => {
+		const response = res.data;
+		if (response.code !== 200) {
+			// ElNotification({
+			// 	title: '错误',
+			// 	type: 'error',
+			// 	message: response.msg,
+			// 	duration: 1000,
+			// });
+			if (response.code === 401 || response.code === 403 || response.code === 408) {
 				// 警告提示窗
-				let msg = '登录状态已过期，您可以继续留在该页面，或者重新登录';
+				let msg = '登录状态已过期，请您重新登录';
 				ElMessageBox.confirm(msg, '系统提示', {
 					confirmButtonText: '重新登录',
 					cancelButtonText: '取消',
@@ -69,16 +60,17 @@ service.interceptors.response.use(
 						duration: 1000,
 					});
 					// 移除过期cookie
-					cookiesUtil.removeToken();
+					// cookiesUtil.removeToken();
 					// 跳转到登录页，具体根据项目路由修改
 					router.push('/login');
 				});
+			} else {
+				// 若后台返回错误值，此处返回对应错误对象，下面 error 就会接收
+				return Promise.reject(new Error(response.error || 'Error'));
 			}
-			// 若后台返回错误值，此处返回对应错误对象，下面 error 就会接收
-			return Promise.reject(new Error(res.data || 'Error'));
 		} else {
 			// 注意返回值
-			return response.data;
+			return response;
 		}
 	},
 	(error) => {

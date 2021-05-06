@@ -4,14 +4,14 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:46:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年05月04日
+ * @LastEditTime: 2021年05月05日
  */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 // 进度条
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
-import Dashboard from '../components/Dashboard.vue';
-import cookiesUtil from '@/utils/cookie';
+import Dashboard from '../views/Dashboard/Dashboard.vue';
+import { validSession } from '@/api/login';
 
 const whiteList: Array<string> = ['/login', '/bind', '/register'];
 
@@ -36,7 +36,7 @@ const WarehousingInfo = () =>
 	import(/* webpackChunkName: "Warehousinglnfo" */ '@/views/warehousingInfo/index.vue');
 
 const routes: Array<RouteRecordRaw> = [
-	{ path: '/login', component: Login },
+	{ path: '/login', name: 'Login', component: Login },
 	{
 		path: '',
 		redirect: () => {
@@ -84,26 +84,22 @@ const router = createRouter({
 	},
 });
 // 全局路由拦截
-router.beforeEach((to, from, next) => {
-	// ...
+router.beforeEach(async (to, from, next) => {
+	//
 	NProgress.start();
-	if (cookiesUtil.getToken()) {
+	const res: any = await validSession();
+	// 如果为登录状态
+	if (res.code === 200 && res.isLogin) {
+		// 如果为登录状态，自动跳转'/'页面
 		if (to.path === '/login') {
 			next({ path: '/' });
-			NProgress.done();
-		}
-		// next();
-	} else {
-		// 没有token，强制跳转到登录页
-		if (whiteList.includes(to.path)) {
-			next();
-			NProgress.done();
 		} else {
-			// next();
-			next('/login');
-			// next(`/login?redirect=${to.path}`)
-			NProgress.done();
+			next();
 		}
+		NProgress.done();
+	} else {
+		next();
+		NProgress.done();
 	}
 });
 export default router;

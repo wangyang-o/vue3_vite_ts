@@ -1,7 +1,7 @@
 /*
  * @Author: wy
  * @Date: 2021年04月08日
- * @LastEditTime: 2021年04月14日
+ * @LastEditTime: 2021年05月05日
  */
 import Cookies from 'js-cookie';
 // token
@@ -10,37 +10,38 @@ const TokenKey = 'token';
 const RefreshTokenKey = 'refresh-token';
 // 获取 值 value
 export function getToken() {
-    return Cookies.get(TokenKey);
+	console.log(TokenKey, Cookies.get(TokenKey));
+	return Cookies.get(TokenKey);
 }
 export function getRefreshToken() {
-    return Cookies.get(RefreshTokenKey);
+	return Cookies.get(RefreshTokenKey);
 }
 // 获取 名 key
 export function getTokenKey() {
-    return TokenKey;
+	return TokenKey;
 }
 export function getRefreshTokenKey() {
-    return RefreshTokenKey;
+	return RefreshTokenKey;
 }
 // 设置cookie
 export function setToken(token: any) {
-    return Cookies.set(TokenKey, token);
+	return Cookies.set(TokenKey, token);
 }
 export function setRefreshToken(refreshToken: any) {
-    return Cookies.set(RefreshTokenKey, refreshToken);
+	return Cookies.set(RefreshTokenKey, refreshToken);
 }
 // 删除
 export function removeToken() {
-    Cookies.remove(TokenKey);
-    Cookies.remove(RefreshTokenKey);
+	Cookies.remove(TokenKey);
+	Cookies.remove(RefreshTokenKey);
 }
 const cookiesUtil = {
-    setToken,
-    setRefreshToken,
-    getToken,
-    getTokenKey,
-    getRefreshToken,
-    getRefreshTokenKey,
-    removeToken,
-}
+	setToken,
+	setRefreshToken,
+	getToken,
+	getTokenKey,
+	getRefreshToken,
+	getRefreshTokenKey,
+	removeToken,
+};
 export default cookiesUtil;
