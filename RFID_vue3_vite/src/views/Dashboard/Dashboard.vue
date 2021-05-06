@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年05月05日
+ * @LastEditTime: 2021年05月06日
 -->
 
 
@@ -147,7 +147,7 @@ export default defineComponent({
     randerTree(treeRef);
     randerGauge(gaugeRef);
     const userList = async () => {
-      const res = await getUserList();
+      const res = await getUserList({ pageNum: 1, pageSize: 10, userName: 'wy' });
       console.log(res);
     }
     onMounted(() => {

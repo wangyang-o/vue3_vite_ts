@@ -14,10 +14,10 @@
             <el-col :span="5">
               <el-input size="small" v-model="userQueryParams.userName" placeholder="用户名称"></el-input>
             </el-col>
-            <el-col :span="16">
+            <el-col :span="17">
               <el-button type="primary" size="small" icon="el-icon-search">搜索</el-button>
             </el-col>
-            <el-col :span="3">
+            <el-col :span="2">
               <el-button
                 size="small"
                 type="warning"

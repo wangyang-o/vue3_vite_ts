@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月21日
- * @LastEditTime: 2021年04月28日
+ * @LastEditTime: 2021年05月06日
 -->
 
 <template>
@@ -84,6 +84,12 @@ export default defineComponent({
         icon: 'el-icon-s-tools',
         title: '工具管理',
         path: '/toolsList',
+      },
+      {
+        id: 11,
+        icon: 'el-icon-user',
+        title: '用户管理',
+        path: '/userList',
       },
     ]);
     return { sidelist };

@@ -4,7 +4,7 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:46:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年05月05日
+ * @LastEditTime: 2021年05月06日
  */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 // 进度条
@@ -23,6 +23,8 @@ const Customers = () =>
 const Jurisdiction = () =>
 	import(/* webpackChunkName: "Jurisdiction" */ '@/views/jurisdiction/index.vue');
 const Price = () => import(/* webpackChunkName: "Price" */ '@/views/price/index.vue');
+const UserList = () =>
+	import(/* webpackChunkName: "Price" */ '@/views/userList/index.vue');
 const ProductList = () =>
 	import(/* webpackChunkName: "ProductList" */ '@/views/productList/index.vue');
 const ProductType = () =>
@@ -50,6 +52,7 @@ const routes: Array<RouteRecordRaw> = [
 		children: [
 			{ path: '', name: 'Dashboard', component: Dashboard },
 			{ path: '/customers', name: 'Customers', component: Customers },
+			{ path: '/userList', name: 'UserList', component: UserList },
 			{ path: '/jurisdiction', name: 'Jurisdiction', component: Jurisdiction },
 			{ path: '/price', name: 'Price', component: Price },
 			{ path: '/productList', name: 'ProductList', component: ProductList },

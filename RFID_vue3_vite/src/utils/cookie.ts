@@ -1,7 +1,7 @@
 /*
  * @Author: wy
  * @Date: 2021年04月08日
- * @LastEditTime: 2021年05月05日
+ * @LastEditTime: 2021年05月06日
  */
 import Cookies from 'js-cookie';
 // token
@@ -10,7 +10,6 @@ const TokenKey = 'token';
 const RefreshTokenKey = 'refresh-token';
 // 获取 值 value
 export function getToken() {
-	console.log(TokenKey, Cookies.get(TokenKey));
 	return Cookies.get(TokenKey);
 }
 export function getRefreshToken() {

@@ -63,7 +63,6 @@ export default defineComponent({
       ],
     }
     const submitlogin = async () => {
-      console.log('loginForm', loginForm);
       const res: any = await toLogin(loginForm);
       if (res.code === 200) {
         router.push('/');
