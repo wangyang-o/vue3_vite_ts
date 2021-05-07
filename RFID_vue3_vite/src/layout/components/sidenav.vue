@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年05月06日
+ * @LastEditTime: 2021年05月07日
 -->
 <template>
   <div class="sidebar_body">
@@ -107,6 +107,9 @@ export default defineComponent({
 
     const goback = async () => {
       const res: any = await logout();
+      window.sessionStorage.removeItem('isOpen');
+      window.sessionStorage.removeItem('activePath');
+
       ElNotification({
         type: 'success',
         message: res.msg,
@@ -151,7 +154,7 @@ export default defineComponent({
   width: 78px;
   background: #11101d;
   padding: 6px 14px;
-  /* z-index: 99; */
+  z-index: 99;
   transition: all 0.5s ease;
 }
 .sidebar.active {
@@ -253,7 +256,7 @@ export default defineComponent({
 }
 .sidebar ul li .el-icon-search {
   position: absolute;
-  /* z-index: 99; */
+  z-index: 99;
   color: #fff;
   font-size: 22px;
   transition: all 0.5 ease;
@@ -375,9 +378,9 @@ export default defineComponent({
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2px);
   transition: all 0.5s ease;
 }
-/* .sidebar.active ~ .home_content {
+.sidebar.active ~ .home_content {
   z-index: 100;
-} */
+}
 .home_content .text {
   font-size: 25px;
   font-weight: 500;

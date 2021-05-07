@@ -2,7 +2,7 @@
  * @Descripttion: 封装axios拦截器
  * @Author: wy
  * @Date: 2021年04月08日
- * @LastEditTime: 2021年05月05日
+ * @LastEditTime: 2021年05月07日
  */
 // 首先引入axios和封装的cookie方法
 import axios from 'axios';
@@ -64,10 +64,10 @@ service.interceptors.response.use(
 					// 跳转到登录页，具体根据项目路由修改
 					router.push('/login');
 				});
-			} else {
-				// 若后台返回错误值，此处返回对应错误对象，下面 error 就会接收
-				return Promise.reject(new Error(response.error || 'Error'));
+			} else{
+				return response;
 			}
+			
 		} else {
 			// 注意返回值
 			return response;

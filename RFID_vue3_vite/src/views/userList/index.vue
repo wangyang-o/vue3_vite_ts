@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月22日
- * @LastEditTime: 2021年05月06日
+ * @LastEditTime: 2021年05月07日
 -->
 
 <template>
@@ -67,6 +67,7 @@
     <el-row type="flex" justify="center">
       <el-col :span="6">
         <el-pagination
+          v-if="pagingHidden"
           @current-change="handleCurrentChange"
           :page-size="pageSize"
           :current-page="pageNum"
@@ -108,6 +109,7 @@ export default defineComponent({
     const keyword = ref('');
     const userData = ref([]);
     const count = ref(0);
+    const pagingHidden = ref(true);
     const userList = async () => {
       const { data, code }: any = await getUserList(queryParams);
       userData.value = data.data;
@@ -121,13 +123,15 @@ export default defineComponent({
     }
     const searchUserName = () => {
       queryParams.pageNum = 1;
+      pagingHidden.value = true;
       userList();
     }
     const searchByKeyword = async () => {
-      const { data, code }: any = await fuzzySearch({ keyword:keyword.value });
+      pagingHidden.value = false;
+      const { data, code }: any = await fuzzySearch({ keyword: keyword.value });
       userData.value = data.data;
-      count.value = data.count;
     }
+    // 自定义序号
     const indexMethod = (index: number) => {
       return (queryParams.pageNum - 1) * queryParams.pageSize + index + 1;
     }
@@ -135,15 +139,14 @@ export default defineComponent({
       queryParams.pageNum = val;
       userList();
     }
-    onMounted(() => {
-      userList();
-    })
+
+    userList();
     setTimeout(() => {
       animateFlag.value = false;
     }, 500);
     return {
       animateFlag, ...toRefs(queryParams), userData, count,
-      searchUserName, searchByKeyword, keyword,
+      searchUserName, searchByKeyword, keyword, pagingHidden,
       handleEdit, handleDelete, handleCurrentChange, indexMethod
     };
   },

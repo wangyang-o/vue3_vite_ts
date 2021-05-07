@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年05月05日
+ * @LastEditTime: 2021年05月07日
 -->
 <template>
   <div class="login-container">
@@ -71,7 +71,7 @@ export default defineComponent({
           message: res.msg,
           duration: 1000,
         });
-      } else {
+      } else if (res.code === 0) {
         ElNotification({
           type: 'error',
           message: res.msg,

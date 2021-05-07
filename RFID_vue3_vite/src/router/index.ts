@@ -4,7 +4,7 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:46:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年05月06日
+ * @LastEditTime: 2021年05月07日
  */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 // 进度条
@@ -101,7 +101,12 @@ router.beforeEach(async (to, from, next) => {
 		}
 		NProgress.done();
 	} else {
-		next();
+		if (to.path !== '/login') {
+			next('/login');
+		} else {
+			next();
+		}
+
 		NProgress.done();
 	}
 });
