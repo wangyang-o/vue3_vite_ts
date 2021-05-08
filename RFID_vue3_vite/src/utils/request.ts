@@ -2,7 +2,7 @@
  * @Descripttion: 封装axios拦截器
  * @Author: wy
  * @Date: 2021年04月08日
- * @LastEditTime: 2021年05月07日
+ * @LastEditTime: 2021年05月08日
  */
 // 首先引入axios和封装的cookie方法
 import axios from 'axios';
@@ -39,12 +39,6 @@ service.interceptors.response.use(
 	(res: any) => {
 		const response = res.data;
 		if (response.code !== 200) {
-			// ElNotification({
-			// 	title: '错误',
-			// 	type: 'error',
-			// 	message: response.msg,
-			// 	duration: 1000,
-			// });
 			if (response.code === 401 || response.code === 403 || response.code === 408) {
 				// 警告提示窗
 				let msg = '登录状态已过期，请您重新登录';

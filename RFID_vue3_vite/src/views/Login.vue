@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年05月07日
+ * @LastEditTime: 2021年05月08日
 -->
 <template>
   <div class="login-container">
@@ -18,10 +18,7 @@
         <!-- <el-form-item></el-form-item> -->
       </el-form>
       <el-button style="width:200px" type="primary" round @click="submitlogin()">登录</el-button>
-
-      <transition name="el-zoom-in-center">
-        <div class="regester">没有账号？？</div>
-      </transition>
+      <div class="regester">没有账号？？</div>
     </div>
   </div>
 </template>
@@ -64,20 +61,27 @@ export default defineComponent({
     }
     const submitlogin = async () => {
       const res: any = await toLogin(loginForm);
-      if (res.code === 200) {
-        router.push('/');
-        ElNotification({
-          type: 'success',
-          message: res.msg,
-          duration: 1000,
-        });
-      } else if (res.code === 0) {
-        ElNotification({
-          type: 'error',
-          message: res.msg,
-          duration: 1000,
-        });
-      }
+      (loginRef.value as any).validate((valid: boolean) => {
+        if (valid) {
+          if (res.code === 200) {
+            router.push('/');
+            ElNotification({
+              type: 'success',
+              message: res.msg,
+              duration: 1000,
+            });
+          } else if (res.code === 0) {
+            ElNotification({
+              type: 'error',
+              message: res.msg,
+              duration: 1000,
+            });
+          }
+        } else {
+          return;
+        }
+      })
+
     }
     return { loginForm, loginRef, submitlogin, rules };
   },

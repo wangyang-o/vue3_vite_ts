@@ -2,14 +2,14 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月21日
- * @LastEditTime: 2021年05月06日
+ * @LastEditTime: 2021年05月08日
 -->
 
 <template>
   <!-- layout111111111111111111 -->
 
   <Sidenav :sidelist="sidelist">
-    <router-view></router-view>
+    <router-view />
   </Sidenav>
 </template>
 
