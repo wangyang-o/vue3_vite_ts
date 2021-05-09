@@ -2,19 +2,17 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月21日
- * @LastEditTime: 2021年05月08日
+ * @LastEditTime: 2021年05月09日
 -->
 
 <template>
-  <!-- layout111111111111111111 -->
-
   <Sidenav :sidelist="sidelist">
     <router-view />
   </Sidenav>
 </template>
 
 <script lang="ts">
-import { toRefs, defineComponent, reactive } from 'vue';
+import { defineComponent, reactive } from 'vue';
 import Sidenav from '@/layout/components/sidenav.vue';
 import { Sidelist } from './types';
 export default defineComponent({
