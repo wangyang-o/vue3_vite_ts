@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年05月08日
+ * @LastEditTime: 2021年05月15日
 -->
 
 
@@ -35,7 +35,7 @@
         <el-card shadow="hover" :body-style="bodyStyle">
           <template #header>
             <div class="card-header">
-              <span>产品分布</span>
+              <span>价格分布</span>
               <el-tag type="success">
                 <i class="el-icon-s-opportunity"></i>
               </el-tag>

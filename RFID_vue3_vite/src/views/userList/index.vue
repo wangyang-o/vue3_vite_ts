@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月22日
- * @LastEditTime: 2021年05月08日
+ * @LastEditTime: 2021年05月16日
 -->
 
 <template>
@@ -97,7 +97,12 @@
     </el-row>
   </el-card>
   <!-- 添加 -->
-  <el-drawer title="添加用户" :before-close="handleDrawerClose" v-model="drawerIsOpen" direction="rtl">
+  <el-drawer
+    :title="addOrUpdateFlag === 'add' ? '添加用户' : '修改用户'"
+    :before-close="handleDrawerClose"
+    v-model="drawerIsOpen"
+    direction="rtl"
+  >
     <div class="mx-5">
       <el-form
         ref="drawerFormRef"
@@ -311,7 +316,7 @@ export default defineComponent({
       animateFlag, ...toRefs(queryParams), userData, count, loading,
       searchUserName, searchByKeyword, keyword, pagingHidden,
       drawerForm, handleDrawerClose, drawerIsOpen, submitDrawer, rules, drawerFormRef,
-      addOrUpdate,
+      addOrUpdate, addOrUpdateFlag,
       handleEdit, handleDelete, handleCurrentChange, indexMethod
     };
   },
