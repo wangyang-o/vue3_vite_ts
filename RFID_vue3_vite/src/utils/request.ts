@@ -6,15 +6,14 @@
  */
 // 首先引入axios和封装的cookie方法
 import axios from 'axios';
-import cookiesUtil from './cookie';
 // 提示弹窗
 import { ElNotification, ElMessageBox } from 'element-plus';
 import router from '../router';
 
 const service = axios.create({
-	baseURL: 'localhost:18080/warehouse', // url = base url + request url
+	baseURL: '/api', // url = base url + request url
 	timeout: 10000,
-	withCredentials: true, // 请求携带凭据
+	// withCredentials: true, // 请求携带凭据
 	headers: {
 		'Content-Type': 'application/json;charset=utf-8',
 	},
@@ -27,7 +26,10 @@ service.interceptors.request.use(
 		// 	config.headers[cookiesUtil.getTokenKey()] = cookiesUtil.getToken();
 		// }
 		// 在此处添加请求头等，如添加 token
-		config.headers['token'] = window.localStorage.getItem('token');
+		const token: string | null = window.localStorage.getItem('token');
+		if (token) {
+			config.headers['token'] = token;
+		}
 		return config;
 	},
 	(err) => {

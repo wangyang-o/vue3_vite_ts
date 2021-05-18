@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年05月07日
+ * @LastEditTime: 2021年05月18日
 -->
 <template>
   <div class="sidebar_body">
@@ -107,15 +107,18 @@ export default defineComponent({
 
     const goback = async () => {
       const res: any = await logout();
+      window.localStorage.removeItem('token');
       window.sessionStorage.removeItem('isOpen');
       window.sessionStorage.removeItem('activePath');
+      if (res.status === 200) {
+        ElNotification({
+          type: 'success',
+          message: res.msg,
+          duration: 1000,
+        });
+        router.push('login');
+      }
 
-      ElNotification({
-        type: 'success',
-        message: res.msg,
-        duration: 1000,
-      });
-      router.push('login');
     };
     return {
       isActive,

@@ -4,11 +4,10 @@
  * @Author: wy
  * @Date: 2021年04月07日 22:05:35
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年05月05日
+ * @LastEditTime: 2021年05月18日
  */
 import { InjectionKey } from 'vue';
 import { createStore, Store } from 'vuex';
-import { validSession } from '@/api/login';
 import router from '../router';
 
 export interface State {

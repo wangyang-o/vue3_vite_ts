@@ -2,20 +2,13 @@
  * @Descripttion:
  * @Author: wy
  * @Date: 2021年05月04日
- * @LastEditTime: 2021年05月05日
+ * @LastEditTime: 2021年05月18日
  */
 import service from '@/utils/request';
-// 验证后台session
-export function validSession() {
-	return service({
-		url: '/isLogin',
-		method: 'get',
-	});
-}
 // 登录
 export function toLogin(data: any) {
 	return service({
-		url: '/login',
+		url: '/warehouse/sys/login',
 		method: 'post',
 		data: data,
 	});
@@ -23,7 +16,7 @@ export function toLogin(data: any) {
 // 注销
 export function logout() {
 	return service({
-		url: '/logout',
-		method: 'get',
+		url: '/warehouse/sys/logout',
+		method: 'post',
 	});
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年05月08日
+ * @LastEditTime: 2021年05月18日
 -->
 <template>
   <div class="login-container">
@@ -28,15 +28,10 @@ import { watch, defineComponent, ref, reactive } from "vue";
 import { toLogin } from '@/api/login';
 import { ElNotification } from 'element-plus';
 import router from '../router';
-
-// interface loginInf {
-//   userName: string;
-//   password: string;
-// }
 export default defineComponent({
   name: "Login",
   setup: (props, context) => {
-    const loginForm = reactive({ userName: 'wy', password: '12345' });
+    const loginForm = reactive({ userName: 'admin', password: '123456' });
     const loginRef = ref<HTMLElement | null>(null);
 
     const rules = {
@@ -61,16 +56,18 @@ export default defineComponent({
     }
     const submitlogin = async () => {
       const res: any = await toLogin(loginForm);
+      console.log(res);
       (loginRef.value as any).validate((valid: boolean) => {
         if (valid) {
-          if (res.code === 200) {
+          if (res.status === 200) {
+            window.localStorage.setItem('token',res.token);
             router.push('/');
             ElNotification({
               type: 'success',
               message: res.msg,
               duration: 1000,
             });
-          } else if (res.code === 0) {
+          } else if (res.status === 400) {
             ElNotification({
               type: 'error',
               message: res.msg,

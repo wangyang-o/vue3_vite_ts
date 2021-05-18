@@ -4,14 +4,13 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:46:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年05月07日
+ * @LastEditTime: 2021年05月18日
  */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 // 进度条
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import Dashboard from '../views/Dashboard/Dashboard.vue';
-import { validSession } from '@/api/login';
 
 const whiteList: Array<string> = ['/login', '/bind', '/register'];
 
@@ -90,9 +89,9 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
 	//
 	NProgress.start();
-	const res: any = await validSession();
+	const token = window.localStorage.getItem('token');
 	// 如果为登录状态
-	if (res.code === 200 && res.isLogin) {
+	if (token) {
 		// 如果为登录状态，自动跳转'/'页面
 		if (to.path === '/login') {
 			next({ path: '/' });
