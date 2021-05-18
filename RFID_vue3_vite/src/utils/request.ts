@@ -2,7 +2,7 @@
  * @Descripttion: 封装axios拦截器
  * @Author: wy
  * @Date: 2021年04月08日
- * @LastEditTime: 2021年05月08日
+ * @LastEditTime: 2021年05月18日
  */
 // 首先引入axios和封装的cookie方法
 import axios from 'axios';
@@ -12,7 +12,7 @@ import { ElNotification, ElMessageBox } from 'element-plus';
 import router from '../router';
 
 const service = axios.create({
-	baseURL: 'http://localhost:3000', // url = base url + request url
+	baseURL: 'localhost:18080/warehouse', // url = base url + request url
 	timeout: 10000,
 	withCredentials: true, // 请求携带凭据
 	headers: {
@@ -23,11 +23,11 @@ const service = axios.create({
 service.interceptors.request.use(
 	(config) => {
 		// 判断一下是否有cookie 如果有的话则把cookie放入请求头中
-		if (cookiesUtil.getToken()) {
-			config.headers[cookiesUtil.getTokenKey()] = cookiesUtil.getToken();
-		}
+		// if (cookiesUtil.getToken()) {
+		// 	config.headers[cookiesUtil.getTokenKey()] = cookiesUtil.getToken();
+		// }
 		// 在此处添加请求头等，如添加 token
-		// config.headers['Authorization'] = 'tokentokentokentokentokentokenhhh'
+		config.headers['token'] = window.localStorage.getItem('token');
 		return config;
 	},
 	(err) => {
@@ -58,10 +58,9 @@ service.interceptors.response.use(
 					// 跳转到登录页，具体根据项目路由修改
 					router.push('/login');
 				});
-			} else{
+			} else {
 				return response;
 			}
-			
 		} else {
 			// 注意返回值
 			return response;
