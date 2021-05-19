@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月22日
- * @LastEditTime: 2021年05月16日
+ * @LastEditTime: 2021年05月19日
 -->
 
 <template>
@@ -18,7 +18,7 @@
                 @keyup.enter="searchUserName"
                 @clear="searchUserName"
                 size="small"
-                v-model="userName"
+                v-model="username"
                 placeholder="用户名称"
               ></el-input>
             </el-col>
@@ -47,11 +47,12 @@
   <el-card class="m-1">
     <el-table size="small" :data="userData" style="width: 100%" empty-text="没有数据了...">
       <el-table-column type="index" :index="indexMethod" label="序号"></el-table-column>
-      <el-table-column prop="userName" label="姓名"></el-table-column>
-      <el-table-column prop="userPhone" label="电话"></el-table-column>
-      <el-table-column prop="userSex" label="性别"></el-table-column>
+      <el-table-column prop="username" label="姓名"></el-table-column>
+      <el-table-column prop="iphone" label="电话"></el-table-column>
+      <el-table-column prop="sex" label="性别"></el-table-column>
       <el-table-column prop="createTime" label="创建时间"></el-table-column>
-      <el-table-column prop="userAge" label="年龄（岁）"></el-table-column>
+      <el-table-column prop="age" label="年龄（岁）"></el-table-column>
+      <el-table-column prop="updateTime" label="更新时间"></el-table-column>
       <el-table-column align="right">
         <template #header>
           <el-input
@@ -64,7 +65,7 @@
           />
         </template>
         <template #default="scope">
-          <el-button size="mini" @click="handleEdit(scope.row.userId)">编辑</el-button>
+          <el-button size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
           <el-popconfirm
             confirmButtonText="确定"
             cancelButtonText="点错了"
@@ -72,7 +73,7 @@
             iconColor="red"
             :title="'确定删除 ' + scope.row.userName + ' 的所有信息吗？'"
             trigger="click"
-            @confirm="handleDelete(scope.row.userId)"
+            @confirm="handleDelete(scope.row.id)"
           >
             <template #reference>
               <el-button size="mini" type="danger">删除</el-button>
@@ -86,8 +87,8 @@
         <el-pagination
           v-if="pagingHidden"
           @current-change="handleCurrentChange"
-          :page-size="pageSize"
-          :current-page="pageNum"
+          :page-size="size"
+          :current-page="current"
           background
           layout="prev, pager, next"
           :total="count"
@@ -111,17 +112,17 @@
         label-position="top"
         :rules="rules"
       >
-        <el-form-item label="姓名:" prop="userName">
-          <el-input v-model="drawerForm.userName" autocomplete="off" placeholder="请输入姓名"></el-input>
+        <el-form-item label="姓名:" prop="username">
+          <el-input v-model="drawerForm.username" autocomplete="off" placeholder="请输入姓名"></el-input>
         </el-form-item>
-        <el-form-item label="年龄:" prop="userAge">
-          <el-input v-model="drawerForm.userAge" autocomplete="off" placeholder="请输入年龄"></el-input>
+        <el-form-item label="年龄:" prop="age">
+          <el-input v-model="drawerForm.age" autocomplete="off" placeholder="请输入年龄"></el-input>
         </el-form-item>
-        <el-form-item label="电话:" prop="userPhone">
-          <el-input v-model="drawerForm.userPhone" autocomplete="off" placeholder="请输入电话"></el-input>
+        <el-form-item label="电话:" prop="iphone">
+          <el-input v-model="drawerForm.iphone" autocomplete="off" placeholder="请输入电话"></el-input>
         </el-form-item>
-        <el-form-item label="性别:" prop="userSex">
-          <el-select v-model="drawerForm.userSex" clearable style="width:100%" placeholder="请选择年龄">
+        <el-form-item label="性别:" prop="sex">
+          <el-select v-model="drawerForm.sex" clearable style="width:100%" placeholder="请选择年龄">
             <el-option label="男" value="男"></el-option>
             <el-option label="女" value="女"></el-option>
           </el-select>
@@ -146,19 +147,12 @@
 
 <script lang="ts">
 import { ref, defineComponent, toRefs, reactive, onMounted } from 'vue';
-import { getUserList, fuzzySearch, addUser, updateUser, deleteUser, getUserById } from '@/api/users';
+import { getUserList, deleteUser, putUser } from '@/api/users';
 import { ElNotification } from 'element-plus';
 interface queryParamsInf {
-  userName: string;
-  pageSize: number;
-  pageNum: number;
-}
-interface userDataInf {
-  userName: string;
-  userPhone: string;
-  userAge: number;
-  userSex: string;
-  role: string;
+  username: string;
+  size: number;
+  current: number;
 }
 export default defineComponent({
   name: 'userList',
@@ -167,33 +161,34 @@ export default defineComponent({
     const animateFlag = ref(true);
     const loading = ref(false);
     const queryParams = reactive<queryParamsInf>({
-      userName: '',
-      pageNum: 1,
-      pageSize: 10,
+      username: '',
+      current: 1,
+      size: 10,
     });
     const keyword = ref('');
     const userData = ref([]);
     const count = ref(0);
-
+    // 分页组件是否显示
     const pagingHidden = ref(true);
     const userList = async () => {
-      const { data, code }: any = await getUserList(queryParams);
-      userData.value = data.data;
-      count.value = data.count;
+      const { data }: any = await getUserList(queryParams);
+      userData.value = data.records;
+      count.value = data.total;
     }
-    const updateUserInfo = ref({
-    })
     const handleEdit = async (userId: number) => {
-
       addOrUpdate('edit');
-      const { code, data }: any = await getUserById({ userId });
-      drawerForm.value = data;
-      console.log(drawerForm.value);
+      console.log('wangyang');
+      const { code, data }: any = await getUserList({ id: userId });
+      console.log(data);
+      if (code === 0) {
+        drawerForm.value = data.records[0];
+      }
+
 
     }
     const handleDelete = async (userId: number) => {
       console.log(userId);
-      const { code, msg }: any = await deleteUser({ userId });
+      const { code, msg }: any = await deleteUser({ ids: userId });
       if (code === 200) {
         searchUserName()
         ElNotification({
@@ -212,30 +207,30 @@ export default defineComponent({
       }
     }
     const searchUserName = () => {
-      queryParams.pageNum = 1;
+      queryParams.current = 1;
       pagingHidden.value = true;
       userList();
     }
     const searchByKeyword = async () => {
       pagingHidden.value = false;
-      const { data, code }: any = await fuzzySearch({ keyword: keyword.value });
-      userData.value = data.data;
+      const { data, code }: any = await getUserList(queryParams);
+      userData.value = data.records;
     }
     // 自定义序号
     const indexMethod = (index: number) => {
-      return (queryParams.pageNum - 1) * queryParams.pageSize + index + 1;
+      return (queryParams.current - 1) * queryParams.size + index + 1;
     }
     const handleCurrentChange = (val: number) => {
-      queryParams.pageNum = val;
+      queryParams.current = val;
       userList();
     }
     // Drawer相关
     const drawerIsOpen = ref(false);
     const addOrUpdateFlag = ref('');
     const drawerFormRef = ref<HTMLElement | null>(null);
-    const drawerForm = ref({ userName: '', userSex: '', userAge: '', userPhone: '' });
+    const drawerForm = ref({ username: '', sex: '', age: '', iphone: '' });
     const rules = {
-      userName: [
+      username: [
         { required: true, message: "请输入用户姓名", trigger: "blur" },
         {
           min: 2,
@@ -244,31 +239,30 @@ export default defineComponent({
           trigger: "blur",
         },
       ],
-      userSex: { required: true, message: "请选择性别", trigger: "blur" },
-      userAge: { required: true, message: "请输入年龄", trigger: "blur" },
-      userPhone: { max: 20, required: true, message: "请输入电话", trigger: "blur" },
+      sex: { required: true, message: "请选择性别", trigger: "blur" },
+      age: { required: true, message: "请输入年龄", trigger: "blur" },
+      iphone: { max: 20, required: true, message: "请输入电话", trigger: "blur" },
 
     }
     const handleDrawerClose = () => {
       (drawerFormRef.value as any).resetFields();
       loading.value = false;
       drawerIsOpen.value = false;
-
+      delete (drawerForm.value as any).id;
     }
     const addOrUpdate = (flag: string) => {
       drawerIsOpen.value = !drawerIsOpen.value;
       addOrUpdateFlag.value = flag;
+      console.log('addOrUpdate', addOrUpdateFlag.value);
     }
     const submitDrawer = () => {
       (drawerFormRef.value as any).validate(async (valid: boolean) => {
         if (!valid) return;
         loading.value = true;
         if (addOrUpdateFlag.value === 'add') {
-          const { code, msg }: any = await addUser(drawerForm.value);
-          if (code === 200) {
-            (drawerFormRef.value as any).resetFields();
-            loading.value = false;
-            drawerIsOpen.value = false;
+          const { code, msg }: any = await putUser(drawerForm.value);
+          if (code === 0) {
+            handleDrawerClose();
             searchUserName();
             ElNotification({
               type: 'success',
@@ -283,11 +277,11 @@ export default defineComponent({
             });
           }
         } else {
-          const { code, msg }: any = await updateUser(drawerForm.value);
-          if (code === 200) {
-            (drawerFormRef.value as any).resetFields();
-            loading.value = false;
-            drawerIsOpen.value = false;
+
+          const { code, msg }: any = await putUser(drawerForm.value);
+          console.log('edit');
+          if (code === 0) {
+            handleDrawerClose();
             searchUserName();
             ElNotification({
               type: 'success',
