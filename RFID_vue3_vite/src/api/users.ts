@@ -2,15 +2,15 @@
  * @Descripttion:
  * @Author: wy
  * @Date: 2021年04月18日
- * @LastEditTime: 2021年05月08日
+ * @LastEditTime: 2021年05月19日
  */
 import service from '@/utils/request';
 // 用户列表
-export function getUserList(data: any) {
+export function getUserList(query: any) {
 	return service({
-		url: 'api/users/getUserList',
-		method: 'post',
-		data: data,
+		url: '/warehouse/warehouse-user',
+		method: 'get',
+		params: query,
 	});
 }
 // 模糊查找
