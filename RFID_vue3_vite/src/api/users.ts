@@ -5,51 +5,29 @@
  * @LastEditTime: 2021年05月19日
  */
 import service from '@/utils/request';
-// 用户列表
+// 用户列表,包含分页
 export function getUserList(query: any) {
 	return service({
 		url: '/warehouse/warehouse-user',
-		method: 'get',
+		method: 'post',
 		params: query,
 	});
 }
-// 模糊查找
-export function fuzzySearch(data: any) {
-	return service({
-		url: 'api/users/fuzzySearch',
-		method: 'post',
-		data: data,
-	});
-}
-// 删除
+
+// 删除ids
 export function deleteUser(data: any) {
 	return service({
-		url: 'api/users/deleteUser',
+		url: '/warehouse/warehouse-user',
 		method: 'delete',
 		params: data,
 	});
 }
-// 添加
-export function addUser(data: any) {
+// 添加或者修改
+// 有id就是修改，没有
+export function putUser(data: any) {
 	return service({
-		url: 'api/users/addUser',
-		method: 'post',
-		data: data,
-	});
-}
-//修改
-export function updateUser(data: any) {
-	return service({
-		url: 'api/users/updateUser',
-		method: 'post',
-		data: data,
-	});
-}
-//查抄by id
-export function getUserById(data: any) {
-	return service({
-		url: 'api/users/getUserById',
-		method: 'get',
+		url: '/warehouse/warehouse-user',
+		method: 'put',
 		params: data,
 	});
 }
