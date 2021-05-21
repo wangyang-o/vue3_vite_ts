@@ -46,24 +46,14 @@
   <!-- 用户表格 -->
   <el-card class="m-1">
     <el-table size="small" :data="userData" style="width: 100%" empty-text="没有数据了...">
-      <el-table-column type="index" :index="indexMethod" label="序号"></el-table-column>
-      <el-table-column prop="username" label="姓名"></el-table-column>
-      <el-table-column prop="iphone" label="电话"></el-table-column>
-      <el-table-column prop="sex" label="性别"></el-table-column>
-      <el-table-column prop="createTime" label="创建时间"></el-table-column>
-      <el-table-column prop="age" label="年龄（岁）"></el-table-column>
-      <el-table-column prop="updateTime" label="更新时间"></el-table-column>
-      <el-table-column align="right">
-        <template #header>
-          <el-input
-            v-model="keyword"
-            clearable
-            @keyup.enter.native="searchByKeyword"
-            @clear="searchUserName"
-            size="mini"
-            placeholder="输入关键字搜索"
-          />
-        </template>
+      <el-table-column align="center" type="index" :index="indexMethod" label="序号"></el-table-column>
+      <el-table-column align="center" prop="username" label="姓名"></el-table-column>
+      <el-table-column align="center" prop="iphone" label="电话"></el-table-column>
+      <el-table-column align="center" prop="sex" label="性别"></el-table-column>
+      <el-table-column align="center" prop="createTime" label="创建时间"></el-table-column>
+      <el-table-column align="center" prop="age" label="年龄（岁）"></el-table-column>
+      <el-table-column align="center" prop="updateTime" label="更新时间"></el-table-column>
+      <el-table-column align="center" label="操作">
         <template #default="scope">
           <el-button size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
           <el-popconfirm
@@ -153,6 +143,7 @@ interface queryParamsInf {
   username: string;
   size: number;
   current: number;
+  field: string;
 }
 export default defineComponent({
   name: 'userList',
@@ -170,9 +161,8 @@ export default defineComponent({
       username: '',
       current: 1,
       size: 10,
+      field: 'createTime',
     });
-    // 关键词搜索
-    const keyword = ref('');
     // 列表数据
     const userData = ref([]);
     // 列表数据总个数total
@@ -218,12 +208,6 @@ export default defineComponent({
       queryParams.current = 1;
       pagingHidden.value = true;
       userList();
-    }
-    // 根据关键词搜索
-    const searchByKeyword = async () => {
-      pagingHidden.value = false;
-      const { data, code }: any = await getUserList(queryParams);
-      userData.value = data.records;
     }
     // 自定义table序号
     const indexMethod = (index: number) => {
@@ -319,7 +303,7 @@ export default defineComponent({
     userList();
     return {
       animateFlag, ...toRefs(queryParams), userData, count, loading,
-      searchUserName, searchByKeyword, keyword, pagingHidden,
+      searchUserName, pagingHidden,
       drawerForm, handleDrawerClose, drawerIsOpen, submitDrawer, rules, drawerFormRef,
       addOrUpdate, addOrUpdateFlag,
       handleEdit, handleDelete, handleCurrentChange, indexMethod
