@@ -147,7 +147,7 @@
 
 <script lang="ts">
 import { ref, defineComponent, toRefs, reactive, onMounted } from 'vue';
-import { getUserList, deleteUser, putUser } from '@/api/users';
+import { getUserList, deleteUser, putUser, getInstanceById } from '@/api/users';
 import { ElNotification } from 'element-plus';
 interface queryParamsInf {
   username: string;
@@ -186,12 +186,11 @@ export default defineComponent({
       count.value = data.total;
     }
     // 编辑功能
-    const handleEdit = async (userId: number) => {
+    const handleEdit = async (userId: string) => {
       addOrUpdate('edit');
-      const { code, data }: any = await getUserList({ id: userId });
-      console.log(data);
+      const { code, data }: any = await getInstanceById(userId);
       if (code === 0) {
-        drawerForm.value = data.records[0];
+        drawerForm.value = data;
       }
     }
     // 删除功能
