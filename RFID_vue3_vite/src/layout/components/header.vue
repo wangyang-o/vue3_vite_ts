@@ -2,31 +2,33 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月21日
- * @LastEditTime: 2021年04月26日
+ * @LastEditTime: 2021年05月21日
 -->
 <template>
-
   <div class="header-container">
     <div class="header-info_personal">
-      <i class="el-icon-back" @click="goBack">返回</i>
-
+      <!-- <i class="el-icon-back" @click="goBack">返回</i> -->
+      <i class="el-icon-star-on" style="color: #409EFF;"></i>
+      <i class="el-icon-star-on" style="color: #67C23A;"></i>
+      <i class="el-icon-star-on" style="color: #E6A23C;"></i>
     </div>
     <div class="header-info_new">
-      <i class="el-icon-full-screen mx-1" @click="goBack"></i>
-      <i class="el-icon-refresh  mx-1" @click="goBack"></i>
-      <div class="header-img_container  mx-1">
-        <img src="@/assets/img/littlecun.jpg" class="mr-1">
-        <span>天行</span>
+      <i class="el-icon-full-screen mx-1" @click="fullScreen"></i>
+      <i class="el-icon-refresh mx-1" @click="refresh"></i>
+      <div class="header-img_container mx-1">
+        <!-- <img src="@/assets/img/littlecun.jpg" class="mr-1" /> -->
+        <i class="el-icon-user-solid"></i>
+        <!-- <span>天行</span> -->
       </div>
       <i class="el-icon-s-tools mx-1" @click="goBack"></i>
-
     </div>
   </div>
-
 </template>
     
     <script lang="ts">
 import { ref, defineComponent } from 'vue';
+import router from '@/router';
+
 export default defineComponent({
   name: 'Header',
   props: {},
@@ -34,7 +36,33 @@ export default defineComponent({
     const goBack = () => {
       console.log('goback');
     };
-    return { goBack };
+    const fullScreen = () => {
+      const el: any = document.body;
+      const doc: any = document;
+      const isFullscreen = doc['fullcreen'] || doc['mozFullScreen'] || doc['webkitIsFullScreen'];
+      if (!isFullscreen) {
+        if (el['requestFullscreen']) {
+          el['requestFullscreen']();
+        } else if (el['mozRequestFullScreen']) {
+          el['mozRequestFullScreen']();
+        } else if (el['webkitRequestFullscreen']) {
+          el['webkitRequestFullscreen']();
+        }
+      } else {
+        if (doc['exitFullscreen']) {
+          doc['exitFullscreen']();
+        } else if (doc['mozCancelFullScreen']) {
+          doc['mozCancelFullScreen']();
+        } else if (doc['webkitExitFullscreen']) {
+          doc['webkitExitFullscreen']();
+        }
+      }
+    };
+
+    const refresh = () => {
+      router.go(0)
+    };
+    return { goBack, fullScreen, refresh };
   },
 });
 </script>
