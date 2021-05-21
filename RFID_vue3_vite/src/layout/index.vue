@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月21日
- * @LastEditTime: 2021年05月09日
+ * @LastEditTime: 2021年05月21日
 -->
 
 <template>
@@ -30,22 +30,10 @@ export default defineComponent({
         path: '/home',
       },
       {
-        id: 2,
-        icon: 'el-icon-user-solid',
-        title: '角色管理',
-        path: '/roles',
-      },
-      {
-        id: 3,
-        icon: 'el-icon-chat-dot-round',
-        title: '权限管理',
-        path: '/jurisdiction',
-      },
-      {
-        id: 4,
-        icon: 'el-icon-coin',
-        title: '入库信息管理',
-        path: '/warehousingInfo',
+        id: 8,
+        icon: 'el-icon-document-copy',
+        title: '产品类别',
+        path: '/productType',
       },
       {
         id: 5,
@@ -54,10 +42,10 @@ export default defineComponent({
         path: '/customers',
       },
       {
-        id: 6,
-        icon: 'el-icon-s-order',
-        title: '产品列表',
-        path: '/productList',
+        id: 3,
+        icon: 'el-icon-chat-dot-round',
+        title: '权限管理',
+        path: '/jurisdiction',
       },
       {
         id: 7,
@@ -66,15 +54,33 @@ export default defineComponent({
         path: '/price',
       },
       {
-        id: 8,
-        icon: 'el-icon-document-copy',
-        title: '产品类别',
-        path: '/productType',
+        id: 6,
+        icon: 'el-icon-s-order',
+        title: '产品列表',
+        path: '/productList',
       },
+      {
+        id: 2,
+        icon: 'el-icon-user-solid',
+        title: '角色管理',
+        path: '/roles',
+      },
+
+
+      {
+        id: 4,
+        icon: 'el-icon-coin',
+        title: '入库信息管理-无',
+        path: '/warehousingInfo',
+      },
+
+
+
+
       {
         id: 9,
         icon: 'el-icon-present',
-        title: '存货管理',
+        title: '存货管理-无',
         path: '/stockList',
       },
       {
@@ -86,7 +92,7 @@ export default defineComponent({
       {
         id: 11,
         icon: 'el-icon-user',
-        title: '用户管理',
+        title: '用户管理-完成',
         path: '/userList',
       },
     ]);
