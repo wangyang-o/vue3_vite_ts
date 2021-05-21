@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月22日
- * @LastEditTime: 2021年05月19日
+ * @LastEditTime: 2021年05月21日
 -->
 
 <template>
@@ -158,38 +158,46 @@ export default defineComponent({
   name: 'userList',
   props: {},
   setup: () => {
+    // 骨架图动画
     const animateFlag = ref(true);
+    setTimeout(() => {
+      animateFlag.value = false;
+    }, 500);
+    // 加载按钮开关
     const loading = ref(false);
+    // 查询参数
     const queryParams = reactive<queryParamsInf>({
       username: '',
       current: 1,
       size: 10,
     });
+    // 关键词搜索
     const keyword = ref('');
+    // 列表数据
     const userData = ref([]);
+    // 列表数据总个数total
     const count = ref(0);
     // 分页组件是否显示
     const pagingHidden = ref(true);
+    // 获取列表数据
     const userList = async () => {
       const { data }: any = await getUserList(queryParams);
       userData.value = data.records;
       count.value = data.total;
     }
+    // 编辑功能
     const handleEdit = async (userId: number) => {
       addOrUpdate('edit');
-      console.log('wangyang');
       const { code, data }: any = await getUserList({ id: userId });
       console.log(data);
       if (code === 0) {
         drawerForm.value = data.records[0];
       }
-
-
     }
+    // 删除功能
     const handleDelete = async (userId: number) => {
-      console.log(userId);
       const { code, msg }: any = await deleteUser({ ids: userId });
-      if (code === 200) {
+      if (code === 0) {
         searchUserName()
         ElNotification({
           title: '提示',
@@ -206,29 +214,40 @@ export default defineComponent({
         });
       }
     }
+    // 根据姓名搜索
     const searchUserName = () => {
       queryParams.current = 1;
       pagingHidden.value = true;
       userList();
     }
+    // 根据关键词搜索
     const searchByKeyword = async () => {
       pagingHidden.value = false;
       const { data, code }: any = await getUserList(queryParams);
       userData.value = data.records;
     }
-    // 自定义序号
+    // 自定义table序号
     const indexMethod = (index: number) => {
       return (queryParams.current - 1) * queryParams.size + index + 1;
     }
+    // 控制当前分页页码数
     const handleCurrentChange = (val: number) => {
       queryParams.current = val;
       userList();
     }
     // Drawer相关
     const drawerIsOpen = ref(false);
+    // 添加还是修改
     const addOrUpdateFlag = ref('');
+    const addOrUpdate = (flag: string) => {
+      drawerIsOpen.value = !drawerIsOpen.value;
+      addOrUpdateFlag.value = flag;
+    }
+    // Drawer表单节点
     const drawerFormRef = ref<HTMLElement | null>(null);
+    // Drawer表单数据
     const drawerForm = ref({ username: '', sex: '', age: '', iphone: '' });
+    // 验证规则
     const rules = {
       username: [
         { required: true, message: "请输入用户姓名", trigger: "blur" },
@@ -244,16 +263,12 @@ export default defineComponent({
       iphone: { max: 20, required: true, message: "请输入电话", trigger: "blur" },
 
     }
+    // 关闭drawer
     const handleDrawerClose = () => {
       (drawerFormRef.value as any).resetFields();
       loading.value = false;
       drawerIsOpen.value = false;
       delete (drawerForm.value as any).id;
-    }
-    const addOrUpdate = (flag: string) => {
-      drawerIsOpen.value = !drawerIsOpen.value;
-      addOrUpdateFlag.value = flag;
-      console.log('addOrUpdate', addOrUpdateFlag.value);
     }
     const submitDrawer = () => {
       (drawerFormRef.value as any).validate(async (valid: boolean) => {
@@ -301,11 +316,8 @@ export default defineComponent({
       })
 
     }
-    // 
+    // 初始化table
     userList();
-    setTimeout(() => {
-      animateFlag.value = false;
-    }, 500);
     return {
       animateFlag, ...toRefs(queryParams), userData, count, loading,
       searchUserName, searchByKeyword, keyword, pagingHidden,
