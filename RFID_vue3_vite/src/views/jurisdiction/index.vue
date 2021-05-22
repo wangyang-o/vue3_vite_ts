@@ -2,91 +2,130 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月22日
- * @LastEditTime: 2021年04月28日
+ * @LastEditTime: 2021年05月22日
 -->
 
 <template>
-  <!-- 查询条件，添加用户 -->
+  <!-- 查询条件，添加 -->
   <el-card class="m-1">
     <el-skeleton :rows="0" animated :loading="animateFlag">
       <template #default>
-        <el-form :inline="true" :model="userQueryParams">
+        <el-form @submit.native.prevent :inline="true">
           <el-row type="flex">
             <el-col :span="5">
-              <el-input size="small" v-model="userQueryParams.userName" placeholder="用户名称"></el-input>
+              <el-input
+                clearable
+                @keyup.enter="searchDescirption"
+                @clear="searchDescirption"
+                size="small"
+                v-model="descirption"
+                placeholder="权限描述"
+              ></el-input>
             </el-col>
             <el-col :span="17">
-              <el-button type="primary" size="small" icon="el-icon-search">搜索</el-button>
-            </el-col>
-            <el-col :span="2">
-              <el-button size="small" type="warning" icon="el-icon-circle-plus">添加用户</el-button>
+              <el-button
+                type="primary"
+                size="small"
+                @click="searchDescirption"
+                icon="el-icon-search"
+              >搜索</el-button>
             </el-col>
           </el-row>
         </el-form>
       </template>
     </el-skeleton>
   </el-card>
-  <!-- 用户表格 -->
+  <!-- 表格 -->
   <el-card class="m-1">
-    <el-table :data="userData" style="width: 100%">
-      <el-table-column prop="userName" label="姓名"></el-table-column>
-      <el-table-column prop="age" label="年龄"></el-table-column>
-      <el-table-column prop="phone" label="电话"></el-table-column>
-      <el-table-column prop="gender" label="性别"></el-table-column>
-      <el-table-column prop="role" label="角色"></el-table-column>
+    <el-table size="small" :data="tableData" style="width: 100%" empty-text="没有数据了...">
+      <el-table-column align="center" type="index" :index="indexMethod" label="序号"></el-table-column>
+      <el-table-column align="center" prop="id" label="权限ID"></el-table-column>
+      <el-table-column align="center" prop="permissionName" label="权限名称"></el-table-column>
+      <el-table-column align="center" prop="descirption" label="权限描述"></el-table-column>
+      <el-table-column align="center" prop="createTime" label="创建时间"></el-table-column>
+      <el-table-column align="center" prop="updateTime" label="更新时间"></el-table-column>
     </el-table>
     <el-row type="flex" justify="center">
       <el-col :span="6">
-        <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
+        <el-pagination
+          class="m-1"
+          v-if="pagingHidden"
+          @current-change="handleCurrentChange"
+          :page-size="size"
+          :current-page="current"
+          background
+          layout="prev, pager, next"
+          :total="count"
+        ></el-pagination>
       </el-col>
     </el-row>
   </el-card>
 </template>
-
 <script lang="ts">
-import { ref, defineComponent, reactive } from 'vue';
-
-interface userQueryParamsInf {
-  userName: string;
-}
-interface userDataInf {
-  userName: string;
-  phone: string;
-  age: number;
-  gender: string;
-  role: string;
+import { ref, defineComponent, toRefs, reactive, onMounted } from 'vue';
+import { getPermissionList, getInstanceById } from '@/api/permission';
+import { ElNotification } from 'element-plus';
+interface queryParamsInf {
+  descirption: string;
+  size: number;
+  current: number;
+  field: string;
 }
 export default defineComponent({
-  name: 'Jurisdiction',
+  name: 'permissionList',
   props: {},
   setup: () => {
+    // 骨架图动画
     const animateFlag = ref(true);
-    const userQueryParams = reactive<userQueryParamsInf>({
-      userName: '',
-    });
-    const userData = reactive<userDataInf[]>([{
-      userName: 'wy',
-      phone: '185262728',
-      age: 18,
-      gender: 'man',
-      role: 'superAdmin',
-    }, {
-      userName: 'wy',
-      phone: '185262728',
-      age: 18,
-      gender: 'man',
-      role: 'superAdmin',
-    }, {
-      userName: 'wy',
-      phone: '185262728',
-      age: 18,
-      gender: 'man',
-      role: 'superAdmin',
-    }])
     setTimeout(() => {
       animateFlag.value = false;
     }, 500);
-    return { animateFlag, userQueryParams, userData };
+    // 加载按钮开关
+    const loading = ref(false);
+    // 查询参数
+    const queryParams = reactive<queryParamsInf>({
+      descirption: '',
+      current: 1,
+      size: 10,
+      field: 'createTime',
+    });
+    // 列表数据
+    const tableData = ref([]);
+    // 列表数据总个数total
+    const count = ref(0);
+    // 分页组件是否显示
+    const pagingHidden = ref(true);
+    // 获取列表数据
+    const permissionList = async () => {
+      const { data }: any = await getPermissionList(queryParams);
+      tableData.value = data.records;
+      count.value = data.total;
+    }
+
+    // 根据姓名搜索
+    const searchDescirption = () => {
+      queryParams.current = 1;
+      pagingHidden.value = true;
+      permissionList();
+    }
+    // 自定义table序号
+    const indexMethod = (index: number) => {
+      return (queryParams.current - 1) * queryParams.size + index + 1;
+    }
+    // 控制当前分页页码数
+    const handleCurrentChange = (val: number) => {
+      queryParams.current = val;
+      permissionList();
+    }
+
+
+    // 初始化table
+    permissionList();
+    return {
+      animateFlag, ...toRefs(queryParams), tableData, count, loading,
+      searchDescirption, pagingHidden,
+      handleCurrentChange, indexMethod
+    };
   },
 });
 </script>

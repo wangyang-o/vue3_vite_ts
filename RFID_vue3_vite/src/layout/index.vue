@@ -44,7 +44,7 @@ export default defineComponent({
       {
         id: 3,
         icon: 'el-icon-chat-dot-round',
-        title: '权限管理',
+        title: '权限管理-完成',
         path: '/jurisdiction',
       },
       {
