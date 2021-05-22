@@ -86,7 +86,7 @@ export default defineComponent({
       {
         id: 10,
         icon: 'el-icon-s-tools',
-        title: '工具管理',
+        title: '工具管理-完成',
         path: '/toolsList',
       },
       {
