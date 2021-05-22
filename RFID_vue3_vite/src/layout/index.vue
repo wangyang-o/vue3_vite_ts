@@ -50,7 +50,7 @@ export default defineComponent({
       {
         id: 7,
         icon: 'el-icon-thumb',
-        title: '价格管理',
+        title: '价格管理-完成',
         path: '/price',
       },
       {

@@ -2,91 +2,301 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月22日
- * @LastEditTime: 2021年04月28日
+ * @LastEditTime: 2021年05月22日
 -->
 
 <template>
-  <!-- 查询条件，添加用户 -->
+  <!-- 查询条件，添加 -->
   <el-card class="m-1">
     <el-skeleton :rows="0" animated :loading="animateFlag">
       <template #default>
-        <el-form :inline="true" :model="userQueryParams">
+        <el-form @submit.native.prevent :inline="true">
           <el-row type="flex">
             <el-col :span="5">
-              <el-input size="small" v-model="userQueryParams.userName" placeholder="用户名称"></el-input>
+              <el-input
+                clearable
+                @keyup.enter="searchpriceName"
+                @clear="searchpriceName"
+                size="small"
+                v-model="priceName"
+                placeholder="价格名称"
+              ></el-input>
             </el-col>
             <el-col :span="17">
-              <el-button type="primary" size="small" icon="el-icon-search">搜索</el-button>
+              <el-button
+                type="primary"
+                size="small"
+                @click="searchpriceName"
+                icon="el-icon-search"
+              >搜索</el-button>
             </el-col>
             <el-col :span="2">
-              <el-button size="small" type="warning" icon="el-icon-circle-plus">添加用户</el-button>
+              <el-button
+                size="small"
+                type="warning"
+                @click="addOrUpdate('add')"
+                icon="el-icon-circle-plus"
+              >添加价格</el-button>
             </el-col>
           </el-row>
         </el-form>
       </template>
     </el-skeleton>
   </el-card>
-  <!-- 用户表格 -->
+  <!-- 表格 -->
   <el-card class="m-1">
-    <el-table :data="userData" style="width: 100%">
-      <el-table-column prop="userName" label="姓名"></el-table-column>
-      <el-table-column prop="age" label="年龄"></el-table-column>
-      <el-table-column prop="phone" label="电话"></el-table-column>
-      <el-table-column prop="gender" label="性别"></el-table-column>
-      <el-table-column prop="role" label="角色"></el-table-column>
+    <el-table size="small" :data="tableData" style="width: 100%" empty-text="没有数据了...">
+      <el-table-column align="center" type="index" :index="indexMethod" label="序号"></el-table-column>
+      <el-table-column align="center" prop="id" width="250px" label="价格ID"></el-table-column>
+      <el-table-column align="center" prop="priceName" label="价格名称"></el-table-column>
+      <el-table-column align="center" prop="priceCode" label="价格（元）"></el-table-column>
+      <el-table-column align="center" prop="createTime" label="创建时间"></el-table-column>
+      <el-table-column align="center" prop="createUser" label="创建人"></el-table-column>
+      <el-table-column align="center" prop="updateTime" label="更新时间"></el-table-column>
+      <el-table-column align="center" label="操作">
+        <template #default="scope">
+          <el-button size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
+          <el-popconfirm
+            confirmButtonText="确定"
+            cancelButtonText="点错了"
+            icon="el-icon-info"
+            iconColor="red"
+            :title="'确定删除 ' + scope.row.priceName + ' 的所有信息吗？'"
+            trigger="click"
+            @confirm="handleDelete(scope.row.id)"
+          >
+            <template #reference>
+              <el-button size="mini" type="danger">删除</el-button>
+            </template>
+          </el-popconfirm>
+        </template>
+      </el-table-column>
     </el-table>
     <el-row type="flex" justify="center">
       <el-col :span="6">
-        <el-pagination background layout="prev, pager, next" :total="1000"></el-pagination>
+        <el-pagination
+          v-if="pagingHidden"
+          @current-change="handleCurrentChange"
+          :page-size="size"
+          :current-page="current"
+          background
+          layout="prev, pager, next"
+          :total="count"
+          class="m-1"
+        ></el-pagination>
       </el-col>
     </el-row>
   </el-card>
+  <!-- 添加 -->
+  <el-drawer
+    :title="addOrUpdateFlag === 'add' ? '添加价格' : '修改价格'"
+    :before-close="handleDrawerClose"
+    v-model="drawerIsOpen"
+    direction="rtl"
+  >
+    <div class="mx-5">
+      <el-form
+        ref="drawerFormRef"
+        :model="drawerForm"
+        status-icon
+        label-position="top"
+        :rules="rules"
+      >
+        <el-form-item label="价格名称:" prop="priceName">
+          <el-input v-model="drawerForm.priceName" autocomplete="off" placeholder="请输入姓名"></el-input>
+        </el-form-item>
+        <el-form-item label="价格（单价）:" prop="priceCode">
+          <el-input v-model="drawerForm.priceCode" autocomplete="off" placeholder="请输入价格"></el-input>
+        </el-form-item>
+      </el-form>
+      <el-row :gutter="10">
+        <el-col :span="12">
+          <el-button style="width:100%" @click="handleDrawerClose">取 消</el-button>
+        </el-col>
+        <el-col :span="12">
+          <el-button
+            style="width:100%"
+            type="primary"
+            @click="submitDrawer()"
+            :loading="loading"
+          >{{ loading ? '提交中 ...' : '确 定' }}</el-button>
+        </el-col>
+      </el-row>
+    </div>
+  </el-drawer>
 </template>
-
 <script lang="ts">
-import { ref, defineComponent, reactive } from 'vue';
-
-interface userQueryParamsInf {
-  userName: string;
-}
-interface userDataInf {
-  userName: string;
-  phone: string;
-  age: number;
-  gender: string;
-  role: string;
+import { ref, defineComponent, toRefs, reactive, onMounted } from 'vue';
+import { getPriceList, deletePrice, putPrice, getInstanceById } from '@/api/price';
+import { ElNotification } from 'element-plus';
+import { number } from 'echarts/core';
+interface queryParamsInf {
+  priceName: string;
+  size: number;
+  current: number;
+  field: string;
 }
 export default defineComponent({
-  name: 'Price',
+  name: 'priceList',
   props: {},
   setup: () => {
+    // 骨架图动画
     const animateFlag = ref(true);
-    const userQueryParams = reactive<userQueryParamsInf>({
-      userName: '',
-    });
-    const userData = reactive<userDataInf[]>([{
-      userName: 'wy',
-      phone: '185262728',
-      age: 18,
-      gender: 'man',
-      role: 'superAdmin',
-    }, {
-      userName: 'wy',
-      phone: '185262728',
-      age: 18,
-      gender: 'man',
-      role: 'superAdmin',
-    }, {
-      userName: 'wy',
-      phone: '185262728',
-      age: 18,
-      gender: 'man',
-      role: 'superAdmin',
-    }])
     setTimeout(() => {
       animateFlag.value = false;
     }, 500);
-    return { animateFlag, userQueryParams, userData };
+    // 加载按钮开关
+    const loading = ref(false);
+    // 查询参数
+    const queryParams = reactive<queryParamsInf>({
+      priceName: '',
+      current: 1,
+      size: 10,
+      field: 'createTime',
+    });
+    // 列表数据
+    const tableData = ref([]);
+    // 列表数据总个数total
+    const count = ref(0);
+    // 分页组件是否显示
+    const pagingHidden = ref(true);
+    // 获取列表数据
+    const priceList = async () => {
+      const { data }: any = await getPriceList(queryParams);
+      tableData.value = data.records;
+      count.value = data.total;
+    }
+    // 编辑功能
+    const handleEdit = async (priceId: string) => {
+      addOrUpdate('edit');
+      const { code, data }: any = await getInstanceById(priceId);
+      if (code === 0) {
+        drawerForm.value = data;
+      }
+    }
+    // 删除功能
+    const handleDelete = async (priceId: number) => {
+      const { code, msg }: any = await deletePrice({ ids: priceId });
+      if (code === 0) {
+        searchpriceName()
+        ElNotification({
+          title: '提示',
+          type: 'success',
+          message: msg,
+          duration: 1000,
+        });
+      } else {
+        ElNotification({
+          title: '错误',
+          type: 'error',
+          message: msg,
+          duration: 1000,
+        });
+      }
+    }
+    // 根据姓名搜索
+    const searchpriceName = () => {
+      queryParams.current = 1;
+      pagingHidden.value = true;
+      priceList();
+    }
+    // 自定义table序号
+    const indexMethod = (index: number) => {
+      return (queryParams.current - 1) * queryParams.size + index + 1;
+    }
+    // 控制当前分页页码数
+    const handleCurrentChange = (val: number) => {
+      queryParams.current = val;
+      priceList();
+    }
+    // Drawer相关
+    const drawerIsOpen = ref(false);
+    // 添加还是修改
+    const addOrUpdateFlag = ref('');
+    const addOrUpdate = (flag: string) => {
+      drawerIsOpen.value = !drawerIsOpen.value;
+      addOrUpdateFlag.value = flag;
+    }
+    // Drawer表单节点
+    const drawerFormRef = ref<HTMLElement | null>(null);
+    // Drawer表单数据
+    const drawerForm = ref({ priceName: '', priceCode: undefined });
+    // 验证规则
+    const rules = {
+      priceName: [
+        { required: true, message: "请输入价格名称", trigger: "blur" },
+        {
+          min: 2,
+          max: 30,
+          message: "长度在 3 到 30 个字符",
+          trigger: "blur",
+        },
+      ],
+      priceCode: { required: true, message: "请输入价格（数字）", trigger: "blur" },
+
+    }
+    // 关闭drawer
+    const handleDrawerClose = () => {
+      (drawerFormRef.value as any).resetFields();
+      loading.value = false;
+      drawerIsOpen.value = false;
+      delete (drawerForm.value as any).id;
+    }
+    const submitDrawer = () => {
+      (drawerFormRef.value as any).validate(async (valid: boolean) => {
+        if (!valid) return;
+        loading.value = true;
+        if (addOrUpdateFlag.value === 'add') {
+          const { code, msg }: any = await putPrice(drawerForm.value);
+          if (code === 0) {
+            handleDrawerClose();
+            searchpriceName();
+            ElNotification({
+              type: 'success',
+              message: msg,
+              duration: 1000,
+            });
+          } else {
+            ElNotification({
+              type: 'error',
+              message: msg,
+              duration: 1000,
+            });
+          }
+        } else {
+
+          const { code, msg }: any = await putPrice(drawerForm.value);
+          console.log('edit');
+          if (code === 0) {
+            handleDrawerClose();
+            searchpriceName();
+            ElNotification({
+              type: 'success',
+              message: msg,
+              duration: 1000,
+            });
+          } else {
+            ElNotification({
+              type: 'error',
+              message: msg,
+              duration: 1000,
+            });
+          }
+        }
+
+
+      })
+
+    }
+    // 初始化table
+    priceList();
+    return {
+      animateFlag, ...toRefs(queryParams), tableData, count, loading,
+      searchpriceName, pagingHidden,
+      drawerForm, handleDrawerClose, drawerIsOpen, submitDrawer, rules, drawerFormRef,
+      addOrUpdate, addOrUpdateFlag,
+      handleEdit, handleDelete, handleCurrentChange, indexMethod
+    };
   },
 });
 </script>
