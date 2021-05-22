@@ -38,7 +38,7 @@ export default defineComponent({
       {
         id: 5,
         icon: 'el-icon-s-opportunity',
-        title: '客户列表',
+        title: '客户列表-完成',
         path: '/customers',
       },
       {
