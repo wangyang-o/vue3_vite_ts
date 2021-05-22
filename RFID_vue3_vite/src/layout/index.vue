@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月21日
- * @LastEditTime: 2021年05月21日
+ * @LastEditTime: 2021年05月22日
 -->
 
 <template>
@@ -32,7 +32,7 @@ export default defineComponent({
       {
         id: 8,
         icon: 'el-icon-document-copy',
-        title: '产品类别',
+        title: '产品类别-完成',
         path: '/productType',
       },
       {
