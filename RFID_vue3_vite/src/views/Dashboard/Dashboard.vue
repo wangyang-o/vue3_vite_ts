@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年05月15日
+ * @LastEditTime: 2021年05月22日
 -->
 
 
@@ -72,7 +72,7 @@
               </el-tag>
             </div>
           </template>
-          <div style="width:100%;height:200px" ref="treeRef"></div>
+          <div style="width:100%;height:22vh" ref="treeRef"></div>
         </el-card>
       </el-col>
       <el-col :span="10">
@@ -85,7 +85,7 @@
               </el-tag>
             </div>
           </template>
-          <div style="width:100%;height:200px" ref="gaugeRef"></div>
+          <div style="width:100%;height:22vh" ref="gaugeRef"></div>
         </el-card>
       </el-col>
     </el-row>
