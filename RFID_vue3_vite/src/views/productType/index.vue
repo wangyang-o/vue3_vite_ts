@@ -256,13 +256,13 @@ export default defineComponent({
             ElNotification({
               type: 'success',
               message: msg,
-              duration: 1000,
+              duration: 1000, position: 'bottom-right'
             });
           } else {
             ElNotification({
               type: 'error',
               message: msg,
-              duration: 1000,
+              duration: 1000, position: 'bottom-right'
             });
           }
         } else {
@@ -275,13 +275,13 @@ export default defineComponent({
             ElNotification({
               type: 'success',
               message: msg,
-              duration: 1000,
+              duration: 1000, position: 'bottom-right'
             });
           } else {
             ElNotification({
               type: 'error',
               message: msg,
-              duration: 1000,
+              duration: 1000, position: 'bottom-right'
             });
           }
         }
