@@ -2,7 +2,7 @@
  * @Descripttion:
  * @Author: wy
  * @Date: 2021年04月18日
- * @LastEditTime: 2021年05月21日
+ * @LastEditTime: 2021年05月23日
  */
 import service from '@/utils/request';
 // 用户列表,包含分页
@@ -23,7 +23,7 @@ export function deleteUser(data: any) {
 	});
 }
 // 添加或者修改
-// 有id就是修改，没有
+// 有id就是修改，没有就是添加
 export function putUser(data: any) {
 	return service({
 		url: '/warehouse/warehouse-user',
