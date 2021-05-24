@@ -2,21 +2,17 @@
  * @Descripttion: 
  * @version: 
  * @Author: wy
- * @Date: 2021年04月08日 10:52:45
- * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年04月10日
--->
-<!--
- * @Descripttion: 
- * @version: 
- * @Author: wy
  * @Date: 2021年04月07日 21:55:46
- * @LastEditors: wy
- * @LastEditTime: 2021年04月07日 22:04:05
+ * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021年05月24日
 -->
 <template>
   <div class="not-found">
-    <div class="text">404</div>
+    <div class="text">
+      <span class="animate404">4</span>
+      <span class="animate404">0</span>
+      <span class="animate404">4</span>
+    </div>
     <div class="warning">没有找到该页面哦，亲！</div>
   </div>
 </template>
@@ -29,7 +25,7 @@ export default defineComponent({
       msg: "404",
     };
   },
-  setup() {},
+  setup() { },
 });
 </script>
 <style scoped>
@@ -39,8 +35,9 @@ export default defineComponent({
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
+  height: 900px;
+  width: 1650px;
+  margin: 0 auto;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 .not-found:after {
@@ -61,5 +58,20 @@ export default defineComponent({
 .warning {
   color: #95a5a6;
   font-size: 30px;
+}
+@keyframes ani {
+  25% {
+    margin-top: 50px;
+  }
+  50% {
+    font-size: 250px;
+    margin: 50px;
+  }
+  100% {
+    margin-top: 50px;
+  }
+}
+.animate404 {
+  animation: ani 3s infinite alternate;
 }
 </style>
