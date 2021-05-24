@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月22日
- * @LastEditTime: 2021年05月22日
+ * @LastEditTime: 2021年05月24日
 -->
 
 <template>
@@ -45,20 +45,17 @@
       <el-table-column align="center" prop="createTime" label="创建时间"></el-table-column>
       <el-table-column align="center" prop="updateTime" label="更新时间"></el-table-column>
     </el-table>
-    <el-row type="flex" justify="center">
-      <el-col :span="6">
-        <el-pagination
-          class="m-1"
-          v-if="pagingHidden"
-          @current-change="handleCurrentChange"
-          :page-size="size"
-          :current-page="current"
-          background
-          layout="prev, pager, next"
-          :total="count"
-        ></el-pagination>
-      </el-col>
-    </el-row>
+    <el-pagination
+      v-if="pagingHidden"
+      @current-change="handleCurrentChange"
+      :page-size="size"
+      :current-page="current"
+      background
+      layout="prev, pager, next"
+      :total="count"
+      class="m-1"
+      style="text-align: center;"
+    ></el-pagination>
   </el-card>
 </template>
 <script lang="ts">

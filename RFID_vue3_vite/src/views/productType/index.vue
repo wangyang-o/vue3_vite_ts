@@ -71,20 +71,17 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-row type="flex" justify="center">
-      <el-col :span="6">
-        <el-pagination
-          v-if="pagingHidden"
-          @current-change="handleCurrentChange"
-          :page-size="size"
-          :current-page="current"
-          background
-          layout="prev, pager, next"
-          :total="count"
-          class="m-1"
-        ></el-pagination>
-      </el-col>
-    </el-row>
+    <el-pagination
+      v-if="pagingHidden"
+      @current-change="handleCurrentChange"
+      :page-size="size"
+      :current-page="current"
+      background
+      layout="prev, pager, next"
+      :total="count"
+      class="m-1"
+      style="text-align: center;"
+    ></el-pagination>
   </el-card>
   <!-- 添加 -->
   <el-drawer
