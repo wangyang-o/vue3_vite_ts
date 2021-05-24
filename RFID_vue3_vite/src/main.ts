@@ -14,7 +14,6 @@ import store from './vuex';
 // import ElementPlus from 'element-plus';
 import {
 	ElLoading,
-	ElMessage,
 	ElMessageBox,
 	ElNotification,
 	ElButton,
@@ -36,6 +35,9 @@ import {
 	ElPagination,
 	ElTag,
 	ElOption,
+	ElCarouselItem,
+	ElCarousel,
+	ElSpace,
 } from 'element-plus';
 // 样式
 import 'element-plus/lib/theme-chalk/index.css';
@@ -73,6 +75,9 @@ const components: any[] = [
 	ElPagination,
 	ElOption,
 	ElTag,
+	ElCarouselItem,
+	ElCarousel,
+	ElSpace,
 ];
 components.forEach((component) => {
 	app.use(component);
