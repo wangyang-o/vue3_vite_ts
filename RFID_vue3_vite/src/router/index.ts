@@ -4,7 +4,7 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:46:49
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年05月18日
+ * @LastEditTime: 2021年05月24日
  */
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 // 进度条
@@ -14,27 +14,19 @@ import Dashboard from '../views/Dashboard/Dashboard.vue';
 
 const whiteList: Array<string> = ['/login', '/bind', '/register'];
 
-const Login = () => import(/* webpackChunkName: "Login" */ '@/views/Login.vue');
-const NotFound = () => import(/* webpackChunkName: "NotFound" */ '@/components/404.vue');
-const Layout = () => import(/* webpackChunkName: "Layout" */ '@/layout/index.vue');
-const Customers = () =>
-	import(/* webpackChunkName: "Customers" */ '@/views/customers/index.vue');
-const Jurisdiction = () =>
-	import(/* webpackChunkName: "Jurisdiction" */ '@/views/jurisdiction/index.vue');
-const Price = () => import(/* webpackChunkName: "Price" */ '@/views/price/index.vue');
-const UserList = () =>
-	import(/* webpackChunkName: "Price" */ '@/views/userList/index.vue');
-const ProductList = () =>
-	import(/* webpackChunkName: "ProductList" */ '@/views/productList/index.vue');
-const ProductType = () =>
-	import(/* webpackChunkName: "ProductType" */ '@/views/productType/index.vue');
-const Roles = () => import(/* webpackChunkName: "Roles" */ '@/views/roles/index.vue');
-const StockList = () =>
-	import(/* webpackChunkName: "StockList" */ '@/views/stockList/index.vue');
-const ToolsList = () =>
-	import(/* webpackChunkName: "ToolsList" */ '@/views/toolsList/index.vue');
-const WarehousingInfo = () =>
-	import(/* webpackChunkName: "Warehousinglnfo" */ '@/views/warehousingInfo/index.vue');
+const Login = () => import(/* Login */ '@/views/Login.vue');
+const NotFound = () => import('@/components/404.vue');
+const Layout = () => import(/* chunkName:"Layout" */ '@/layout/index.vue');
+const Customers = () => import('@/views/customers/index.vue');
+const Jurisdiction = () => import('@/views/jurisdiction/index.vue');
+const Price = () => import('@/views/price/index.vue');
+const UserList = () => import('@/views/userList/index.vue');
+const ProductList = () => import('@/views/productList/index.vue');
+const ProductType = () => import('@/views/productType/index.vue');
+const Roles = () => import('@/views/roles/index.vue');
+const StockList = () => import('@/views/stockList/index.vue');
+const ToolsList = () => import('@/views/toolsList/index.vue');
+const WarehousingInfo = () => import('@/views/warehousingInfo/index.vue');
 
 const routes: Array<RouteRecordRaw> = [
 	{ path: '/login', name: 'Login', component: Login },
