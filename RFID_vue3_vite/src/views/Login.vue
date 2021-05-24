@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年05月18日
+ * @LastEditTime: 2021年05月24日
 -->
 <template>
   <div class="login-container">
@@ -31,7 +31,7 @@ import router from '../router';
 export default defineComponent({
   name: "Login",
   setup: (props, context) => {
-    const loginForm = reactive({ userName: 'admin', password: '123456' });
+    const loginForm = reactive({ userName: 'wangyang', password: '000' });
     const loginRef = ref<HTMLElement | null>(null);
 
     const rules = {
@@ -60,7 +60,7 @@ export default defineComponent({
       (loginRef.value as any).validate((valid: boolean) => {
         if (valid) {
           if (res.status === 200) {
-            window.localStorage.setItem('token',res.token);
+            window.localStorage.setItem('token', res.token);
             router.push('/');
             ElNotification({
               type: 'success',
