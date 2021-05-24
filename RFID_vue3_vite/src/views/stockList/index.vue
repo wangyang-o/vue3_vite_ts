@@ -38,7 +38,11 @@
   <!-- 表格 -->
   <el-card class="m-1">
     <el-carousel :interval="4000" type="card" height="200px">
-      <el-carousel-item v-for="(imgUrl,index) in imgList" :key="imgUrl">
+      <el-carousel-item
+        v-for="(imgUrl,index) in imgList"
+        :key="imgUrl"
+        style="box-shadow: 0 5px 15px -5px rgba(0,0,0,.5);"
+      >
         <img class="carousel-img" :src="'src/assets/img/' + imgUrl" />
       </el-carousel-item>
     </el-carousel>
