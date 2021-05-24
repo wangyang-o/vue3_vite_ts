@@ -32,37 +32,37 @@ export default defineComponent({
       {
         id: 8,
         icon: 'el-icon-document-copy',
-        title: '产品类别-完成',
+        title: '产品类别',
         path: '/productType',
       },
       {
         id: 5,
         icon: 'el-icon-s-opportunity',
-        title: '客户列表-完成',
+        title: '客户列表',
         path: '/customers',
       },
       {
         id: 3,
         icon: 'el-icon-chat-dot-round',
-        title: '权限管理-完成',
+        title: '权限管理',
         path: '/jurisdiction',
       },
       {
         id: 7,
         icon: 'el-icon-thumb',
-        title: '价格管理-完成',
+        title: '价格管理',
         path: '/price',
       },
-      {
-        id: 6,
-        icon: 'el-icon-s-order',
-        title: '产品列表',
-        path: '/productList',
-      },
+      // {
+      //   id: 6,
+      //   icon: 'el-icon-s-order',
+      //   title: '产品列表',
+      //   path: '/productList',
+      // },
       {
         id: 2,
         icon: 'el-icon-user-solid',
-        title: '角色管理-完成',
+        title: '角色管理',
         path: '/roles',
       },
       // {
@@ -74,19 +74,19 @@ export default defineComponent({
       {
         id: 9,
         icon: 'el-icon-present',
-        title: '存货管理-无',
+        title: '产品-存货列表',
         path: '/stockList',
       },
       {
         id: 10,
         icon: 'el-icon-s-tools',
-        title: '工具管理-完成',
+        title: '工具管理',
         path: '/toolsList',
       },
       {
         id: 11,
         icon: 'el-icon-user',
-        title: '用户管理-完成',
+        title: '用户管理',
         path: '/userList',
       },
     ]);
