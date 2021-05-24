@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月21日
- * @LastEditTime: 2021年05月22日
+ * @LastEditTime: 2021年05月24日
 -->
 
 <template>
@@ -65,18 +65,12 @@ export default defineComponent({
         title: '角色管理-完成',
         path: '/roles',
       },
-
-
-      {
-        id: 4,
-        icon: 'el-icon-coin',
-        title: '入库信息管理-无',
-        path: '/warehousingInfo',
-      },
-
-
-
-
+      // {
+      //   id: 4,
+      //   icon: 'el-icon-coin',
+      //   title: '入库信息管理-无',
+      //   path: '/warehousingInfo',
+      // },
       {
         id: 9,
         icon: 'el-icon-present',
