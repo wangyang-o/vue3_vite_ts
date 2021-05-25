@@ -1,7 +1,7 @@
 <!--
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
- * @LastEditTime: 2021年05月22日
+ * @LastEditTime: 2021年05月25日
 -->
 
 
@@ -23,7 +23,7 @@
               </el-tag>
             </div>
           </template>
-          <div class="card-body_number">222 个</div>
+          <div class="card-body_number">{{ cardData[index] }}</div>
           <div class="card-body_text">{{ item.content }}</div>
         </el-card>
       </el-col>
@@ -35,7 +35,9 @@
         <el-card shadow="hover" :body-style="bodyStyle">
           <template #header>
             <div class="card-header">
-              <span>价格分布</span>
+              <el-badge value="最新10" type="danger" class="item">
+                <span>产品价格分布</span>
+              </el-badge>
               <el-tag type="success">
                 <i class="el-icon-s-opportunity"></i>
               </el-tag>
@@ -48,14 +50,14 @@
         <el-card shadow="hover" :body-style="bodyStyle">
           <template #header>
             <div class="card-header">
-              <span>产品数</span>
+              <span>数量-价格分布</span>
               <el-tag type="danger">
                 <i class="el-icon-s-flag"></i>
               </el-tag>
             </div>
           </template>
           <!-- <v-chart style="width:100%;height:300px" :option="option1" lazyUpdate /> -->
-          <div style="width:100%;height:270px" ref="pieRef"></div>
+          <div style="width:100%;height:270px;" ref="treeRef"></div>
         </el-card>
       </el-col>
     </el-row>
@@ -66,20 +68,22 @@
         <el-card shadow="hover" :body-style="bodyStyle">
           <template #header>
             <div class="card-header">
-              <span>产品分布</span>
+              <el-badge value="最新10" type="danger" class="item">
+                <span>产品储备情况</span>
+              </el-badge>
               <el-tag type="success">
                 <i class="el-icon-s-opportunity"></i>
               </el-tag>
             </div>
           </template>
-          <div style="width:100%;height:22vh" ref="treeRef"></div>
+          <div style="width:100%;height:22vh" ref="pieRef"></div>
         </el-card>
       </el-col>
       <el-col :span="10">
         <el-card shadow="hover" :body-style="bodyStyle">
           <template #header>
             <div class="card-header">
-              <span>用户评价</span>
+              <span>价格指数</span>
               <el-tag type="success">
                 <i class="el-icon-s-opportunity"></i>
               </el-tag>
@@ -95,21 +99,25 @@
 <script lang="ts">
 import { ref, defineComponent, reactive, onMounted } from 'vue';
 import { randerPie, randerBar, randerTree, randerGauge } from './hooks/eChartsHook';
-import { getUserList } from '@/api/users';
+import { ElNotification } from 'element-plus';
+
+import {
+  indexCount,
+} from '@/api/dashboard';
 export default defineComponent({
   name: 'Dashboard',
   props: {},
   setup: () => {
     const cardInfo = reactive([
       {
-        title: '用户数',
+        title: '工具数量',
         icon: 'el-icon-s-opportunity',
         type: 'success',
         content: '不要等待机会，而要创造机会。',
         delay: '0.2s',
       },
       {
-        title: '客户数',
+        title: '用户数量',
         icon: 'el-icon-s-flag',
         type: 'danger',
         content: '没有什么才能比努力更重要。',
@@ -117,7 +125,7 @@ export default defineComponent({
 
       },
       {
-        title: '当前存货量',
+        title: '客户数量',
         icon: 'el-icon-present',
         type: 'warning',
         content: '热情和欲望可以突破一切难关。',
@@ -125,7 +133,7 @@ export default defineComponent({
 
       },
       {
-        title: '剩余存货量',
+        title: '当前存货量',
         icon: 'el-icon-star-on',
         type: 'default',
         content: '健康的身体是实目标的基石。',
@@ -146,12 +154,26 @@ export default defineComponent({
     randerBar(barRef);
     randerTree(treeRef);
     randerGauge(gaugeRef);
-    const userList = async () => {
-      const res = await getUserList({ pageNum: 1, pageSize: 10, userName: 'wy' });
-      console.log(res);
-    }
-    onMounted(() => {
-      userList();
+    // 卡片数据
+    const cardData = ref([]);
+    onMounted(async () => {
+      const { code, data }: any = await indexCount();
+      if (code === 0) {
+        cardData.value = Object.values(data);
+        ElNotification({
+          title: '提示',
+          type: 'success',
+          message: '初始化数据成功！',
+          position: 'bottom-right',
+          duration: 1000,
+        });
+      } else {
+        ElNotification({
+          type: 'error',
+          message: '初始化数据失败！联系管理员',
+          duration: 1000, position: 'bottom-right'
+        });
+      }
     })
     return {
       pieRef,
@@ -160,6 +182,7 @@ export default defineComponent({
       gaugeRef,
       cardInfo,
       bodyStyle,
+      cardData
     };
   },
 });

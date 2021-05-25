@@ -4,7 +4,7 @@
  * @Author: wy
  * @Date: 2021年04月07日 21:37:16
  * @LastEditors: Please set LastEditors
- * @LastEditTime: 2021年05月24日
+ * @LastEditTime: 2021年05月25日
  */
 import { createApp } from 'vue';
 import App from './App.vue';
@@ -38,6 +38,7 @@ import {
 	ElCarouselItem,
 	ElCarousel,
 	ElSpace,
+	ElBadge,
 } from 'element-plus';
 // 样式
 import 'element-plus/lib/theme-chalk/index.css';
@@ -78,6 +79,7 @@ const components: any[] = [
 	ElCarouselItem,
 	ElCarousel,
 	ElSpace,
+	ElBadge,
 ];
 components.forEach((component) => {
 	app.use(component);

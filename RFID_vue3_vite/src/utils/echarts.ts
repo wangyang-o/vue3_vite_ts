@@ -2,7 +2,7 @@
  * @Descripttion:
  * @Author: wy
  * @Date: 2021年04月25日
- * @LastEditTime: 2021年04月25日
+ * @LastEditTime: 2021年05月25日
  */
 import * as echarts from 'echarts/core';
 
@@ -15,6 +15,7 @@ import {
 	RadarChart,
 	TreeChart,
 	GaugeChart,
+	ScatterChart,
 } from 'echarts/charts';
 
 import {
@@ -48,6 +49,7 @@ echarts.use([
 	RadarComponent,
 	TreeChart,
 	GaugeChart,
+	ScatterChart,
 ]);
 
 export default echarts;
