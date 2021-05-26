@@ -2,7 +2,7 @@
  * @Descripttion: 
  * @Author: wy
  * @Date: 2021年04月22日
- * @LastEditTime: 2021年05月24日
+ * @LastEditTime: 2021年05月26日
 -->
 
 <template>
@@ -43,7 +43,7 @@
         :key="imgUrl"
         style="box-shadow: 0 5px 15px -5px rgba(0,0,0,.5);"
       >
-        <img class="carousel-img" :src="'src/assets/img/' + imgUrl" />
+        <img class="carousel-img" :src="imgUrl" />
       </el-carousel-item>
     </el-carousel>
     <el-table size="small" :data="tableData" style="width: 100%" empty-text="没有数据了...">
@@ -73,6 +73,12 @@
 import { ref, defineComponent, toRefs, reactive, onMounted } from 'vue';
 import { getProductList, deleteProduct, putProduct, getInstanceById } from '@/api/product';
 import { ElNotification } from 'element-plus';
+import store1ImgUrl from '@/assets/img/store1.jpg';
+import store2ImgUrl from '@/assets/img/store2.jpg';
+import store3ImgUrl from '@/assets/img/store3.jpg';
+import store4ImgUrl from '@/assets/img/store4.jpg';
+import store5ImgUrl from '@/assets/img/store5.png';
+
 interface queryParamsInf {
   productName: string;
   size: number;
@@ -98,7 +104,12 @@ export default defineComponent({
       field: 'createTime',
     });
     // imgList
-    const imgList = reactive(['store1.jpg', 'store2.jpg', 'store3.jpg', 'store4.jpg', 'store5.png']);
+    const imgList = reactive([
+      store1ImgUrl,
+      store2ImgUrl,
+      store3ImgUrl,
+      store4ImgUrl,
+      store5ImgUrl]);
     // 列表数据
     const tableData = ref([]);
     // 列表数据总个数total
