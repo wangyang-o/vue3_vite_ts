@@ -2,7 +2,7 @@
  * @Descripttion: 封装axios拦截器
  * @Author: wy
  * @Date: 2021年04月08日
- * @LastEditTime: 2021年05月19日
+ * @LastEditTime: 2021年05月26日
  */
 // 首先引入axios和封装的cookie方法
 import axios from 'axios';
@@ -53,18 +53,29 @@ service.interceptors.response.use(
 					cancelButtonText: '取消',
 					type: 'warning',
 					roundButton: true,
-				}).then(() => {
-					ElNotification({
-						type: 'success',
-						message: '退出登陆成功',
-						duration: 1000,
+				})
+					.then(() => {
+						ElNotification({
+							type: 'success',
+							message: '退出登陆成功',
+							duration: 1000,
+						});
+						// 移除过期cookie
+						// cookiesUtil.removeToken();
+						window.localStorage.removeItem('token');
+						// 跳转到登录页，具体根据项目路由修改
+						router.push('/login');
+					})
+					.catch(() => {
+						ElNotification({
+							type: 'success',
+							message: 'token过期已自动退出！',
+							duration: 1000,
+						});
+						window.localStorage.removeItem('token');
+						// 跳转到登录页，具体根据项目路由修改
+						router.push('/login');
 					});
-					// 移除过期cookie
-					// cookiesUtil.removeToken();
-					window.localStorage.removeItem('token');
-					// 跳转到登录页，具体根据项目路由修改
-					router.push('/login');
-				});
 			} else {
 				return response;
 			}
