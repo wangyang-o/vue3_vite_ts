@@ -86,13 +86,16 @@ router.beforeEach(async (to, from, next) => {
 	if (token) {
 		// 如果为登录状态，自动跳转'/'页面
 		if (to.path === '/login') {
+			console.log(1);
 			next({ path: '/' });
 		} else {
+			console.log(2);
 			next();
 		}
 		NProgress.done();
 	} else {
 		next();
+		console.log(3);
 		NProgress.done();
 	}
 });

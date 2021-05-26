@@ -9,7 +9,8 @@ import axios from 'axios';
 // 提示弹窗
 import { ElNotification, ElMessageBox } from 'element-plus';
 import router from '../router';
-
+// 过期弹窗次数
+let count = 0;
 const service = axios.create({
 	baseURL: '/api', // url = base url + request url
 	timeout: 10000,
@@ -46,36 +47,39 @@ service.interceptors.response.use(
 				response.status === 403 ||
 				response.status === 408
 			) {
-				// 警告提示窗
-				let msg = '登录状态已过期，请您重新登录';
-				ElMessageBox.confirm(msg, '系统提示', {
-					confirmButtonText: '重新登录',
-					cancelButtonText: '取消',
-					type: 'warning',
-					roundButton: true,
-				})
-					.then(() => {
-						ElNotification({
-							type: 'success',
-							message: '退出登陆成功',
-							duration: 1000,
-						});
-						// 移除过期cookie
-						// cookiesUtil.removeToken();
-						window.localStorage.removeItem('token');
-						// 跳转到登录页，具体根据项目路由修改
-						router.push('/login');
+				if (count === 0) {
+					count++;
+					// 警告提示窗
+					let msg = '登录状态已过期，请您重新登录';
+					ElMessageBox.confirm(msg, '系统提示', {
+						confirmButtonText: '重新登录',
+						cancelButtonText: '取消',
+						type: 'warning',
+						roundButton: true,
 					})
-					.catch(() => {
-						ElNotification({
-							type: 'success',
-							message: 'token过期已自动退出！',
-							duration: 1000,
+						.then(() => {
+							ElNotification({
+								type: 'success',
+								message: '退出登陆成功',
+								duration: 1000,
+							});
+							// 移除过期cookie
+							// cookiesUtil.removeToken();
+							window.localStorage.removeItem('token');
+							// 跳转到登录页，具体根据项目路由修改
+							router.push('/login');
+						})
+						.catch(() => {
+							ElNotification({
+								type: 'success',
+								message: 'token过期已自动退出！',
+								duration: 1000,
+							});
+							window.localStorage.removeItem('token');
+							// 跳转到登录页，具体根据项目路由修改
+							router.push('/login');
 						});
-						window.localStorage.removeItem('token');
-						// 跳转到登录页，具体根据项目路由修改
-						router.push('/login');
-					});
+				}
 			} else {
 				return response;
 			}
